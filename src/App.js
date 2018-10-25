@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import { Navbar, Container, DropdownButton, Dropdown, Row, Badge, Col, Button } from 'react-bootstrap';
+import { Navbar, Container, DropdownButton, Dropdown, Row, Badge, Col, Pagination } from 'react-bootstrap';
 
 class App extends Component {
   cityData = [
@@ -38,10 +38,16 @@ class App extends Component {
             </Navbar.Text>
           </Navbar.Collapse>          
           <Navbar.Collapse className="justify-content-end">
-            <DropdownButton variant="danger" id="dropdown-basic-button" title="Choose a Financial Item">
+            <DropdownButton className="pad-right" variant="danger" id="dropdown-basic-button" title="Revenues">
               <Dropdown.Item active href="#/Revenues">Revenues</Dropdown.Item>
               <Dropdown.Item href="#/Expenses">Expenses</Dropdown.Item>
               <Dropdown.Item href="#/Deficits">Deficits/Surpluses</Dropdown.Item>
+            </DropdownButton>
+            <DropdownButton className="pad-right" variant="success" id="dropdown-basic-button" title="Total Value">
+              <Dropdown.Item active href="#/Revenues">Total Value</Dropdown.Item>
+              <Dropdown.Item href="#/Expenses">Per Capita</Dropdown.Item>
+              <Dropdown.Item href="#/Expenses">Per Household</Dropdown.Item>
+              <Dropdown.Item href="#/Expenses">As Percentage</Dropdown.Item>
             </DropdownButton>
           </Navbar.Collapse>
         </Navbar>
