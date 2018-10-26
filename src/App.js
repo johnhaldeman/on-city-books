@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import * as d3 from "d3";
+
 import { Navbar, Container, DropdownButton, Dropdown, Row, Badge, Col, Pagination } from 'react-bootstrap';
 
 class App extends Component {
@@ -17,10 +19,20 @@ class App extends Component {
     }
   ];
 
-  constructor(props) {
+  dummy = [1, 2, 3];
+
+  constructor(props){
     super(props);
 
+    this.chartRef = React.createRef();
+  }
 
+  componentDidMount(){
+    d3.select(this.chartRef.current)
+      .selectAll("div")
+      .data(this.dummy)
+      .enter()
+      .append("p");
   }
 
 
@@ -62,6 +74,12 @@ class App extends Component {
               <Badge variant="info" pill >&times; Kingston</Badge>
               <Badge variant="dark" pill >&times; Thunder Bay</Badge>
               &nbsp;&nbsp;&nbsp;&nbsp;<Badge variant="primary" pill >+ Add New City</Badge>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col>
+              <div ref={this.chartRef} />
             </Col>
           </Row>
 
