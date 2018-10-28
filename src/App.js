@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 import * as d3 from "d3";
 
-import { Navbar, Container, DropdownButton, Dropdown, Row, Badge, Col, Pagination } from 'react-bootstrap';
+
+import { Navbar, Container, DropdownButton, Dropdown, Row, Badge, Col } from 'react-bootstrap';
 
 class App extends Component {
   cityData = [
@@ -12,7 +13,7 @@ class App extends Component {
       revenue_streams: [
         { description: "Property Taxes & Payments-In-Lieu of Taxes", calculation: "slc.10X.L9940.C01.01", value: 307577881},
         { description: "Grants from Other Levels of Government", calculation: "slc.10X.L0899.C01.01 + slc.10X.L0699.C01.01", value: 215492558},
-        { description: "Total user fees and service charges (SLC 12 9910 04)", calculation: "slc.10X.L1299.C01.01", value: 124692455},
+        { description: "Total user fees and service charges", calculation: "slc.10X.L1299.C01.01", value: 124692455},
         { description: "Other Revenues", calculation: "slc.10X.L9910.C01.01 - slc.10X.L9940.C01.01 - slc.10X.L0899.C01.01 - slc.10X.L0699.C01.01 - slc.10X.L1299.C01.01", value: 124920913}
         
         //{ description: "Total Revenues", calculation: "slc.10X.L9910.C01.01", value: 772683807},
@@ -27,31 +28,55 @@ class App extends Component {
 
     this.chartRef = React.createRef();
 
+    let graphWidth = window.innerWidth - 20;
+    let data = this.cityData[0].revenue_streams;
+    let rMax = graphWidth / 8;
+    let rMin = 0;
+    let scaleMax = d3.max(data, function(d) { return d.value; });
+    let scaleRadius = d3.scaleSqrt()
+      .domain([0, scaleMax])
+      .range([rMin,rMax]);
+
     this.state = {
-      graphWidth: window.innerWidth - 20
+      data: this.cityData[0].revenue_streams,
+      scaleRadius: scaleRadius,
+      graphWidth: graphWidth,
+      rMax: rMax,
+      rMain: rMin,
+      graphHeight: scaleRadius(scaleMax) * 2
     }
   }
 
   componentDidMount(){
-    let data = this.cityData[0].revenue_streams;
-    let rMax = this.state.graphWidth / 8;
-    let rMin = 10;
 
-    let scaleRadius = d3.scaleSqrt()
-      .domain([d3.min(data, function(d) { return d.value; }), 
-               d3.max(data, function(d) { return d.value; })])
-      .range([rMin,rMax]);
+    let color = d3.schemeGreens[this.state.data.length + 2];
     
     let svg = d3.select(this.chartRef.current);
-    
-    let node = svg.selectAll("circle")
-      .data(data)
+
+    let scale = this.state.scaleRadius;
+    let rMax = this.state.rMax;
+
+    let nodes = svg.selectAll(".graph")
+      .data(this.state.data)
       .enter()
-      .append("circle")
-      .attr('r', function(d) { return scaleRadius(d.value)})
-      .attr('cx', function(d,i){ return i * rMax * 2 + rMax })
-      .attr('cy', function(d,i){
-        return (rMax * 2) - scaleRadius(d.value)}); 
+      .append("g")
+      .attr("transform", function(d, i) {
+        let x = i * rMax * 2 + rMax;
+        let y = 0;
+        return "translate(" + x + "," + y + ")"; 
+      });
+
+    nodes.append("circle")
+      .attr('r', function(d) { return scale(d.value)})
+      .attr('cx', function(d,i){ return 0 })//return i * rMax * 2 + rMax })
+      .attr('cy', function(d,i){ return (rMax * 2) - scale(d.value)})
+      .style("fill", function(d, i) { return color[color.length - (i + 1)]})
+      ;
+    
+    nodes.append("text")
+      .attr('y', rMax * 2 + 18)
+      .attr("text-anchor", "middle")
+      .text(function(d) {return d.description});
     
   }
 
@@ -91,7 +116,7 @@ class App extends Component {
               <Badge variant="success" pill >&times; Toronto</Badge>
               <Badge variant="danger" pill >&times; Ottawa</Badge>
               <Badge variant="warning" pill >&times; London</Badge>
-              <Badge variant="info" pill >&times; Kingston</Badge>
+              <Badge variant="info" className="purple" pill >&times; Kingston</Badge>
               <Badge variant="dark" pill >&times; Thunder Bay</Badge>
               &nbsp;&nbsp;&nbsp;&nbsp;<Badge variant="primary" pill >+ Add New City</Badge>
             </Col>
@@ -100,7 +125,7 @@ class App extends Component {
           <Row>
             <Col>
               <h1>Windsor</h1>
-              <svg width={this.state.graphWidth} height="400" ref={this.chartRef}></svg>
+              <svg width="100%" height={this.state.graphHeight + 20} ref={this.chartRef}></svg>
             </Col>
           </Row>
 
