@@ -13,8 +13,9 @@ class App extends Component {
         { description: "Property Taxes & Payments-In-Lieu of Taxes", calculation: "slc.10X.L9940.C01.01", value: 307577881},
         { description: "Grants from Other Levels of Government", calculation: "slc.10X.L0899.C01.01 + slc.10X.L0699.C01.01", value: 215492558},
         { description: "Total user fees and service charges (SLC 12 9910 04)", calculation: "slc.10X.L1299.C01.01", value: 124692455},
-        { description: "Other Revenues", calculation: "slc.10X.L9910.C01.01 - slc.10X.L9940.C01.01 - slc.10X.L0899.C01.01 - slc.10X.L0699.C01.01 - slc.10X.L1299.C01.01", value: 124920913},
-        { description: "Total Revenues", calculation: "slc.10X.L9910.C01.01", value: 772683807},
+        { description: "Other Revenues", calculation: "slc.10X.L9910.C01.01 - slc.10X.L9940.C01.01 - slc.10X.L0899.C01.01 - slc.10X.L0699.C01.01 - slc.10X.L1299.C01.01", value: 124920913}
+        
+        //{ description: "Total Revenues", calculation: "slc.10X.L9910.C01.01", value: 772683807},
       ]
     }
   ];
@@ -25,14 +26,33 @@ class App extends Component {
     super(props);
 
     this.chartRef = React.createRef();
+
+    this.state = {
+      graphWidth: window.innerWidth - 20
+    }
   }
 
   componentDidMount(){
-    d3.select(this.chartRef.current)
-      .selectAll("div")
-      .data(this.dummy)
+    let data = this.cityData[0].revenue_streams;
+    let rMax = this.state.graphWidth / 8;
+    let rMin = 10;
+
+    let scaleRadius = d3.scaleSqrt()
+      .domain([d3.min(data, function(d) { return d.value; }), 
+               d3.max(data, function(d) { return d.value; })])
+      .range([rMin,rMax]);
+    
+    let svg = d3.select(this.chartRef.current);
+    
+    let node = svg.selectAll("circle")
+      .data(data)
       .enter()
-      .append("p");
+      .append("circle")
+      .attr('r', function(d) { return scaleRadius(d.value)})
+      .attr('cx', function(d,i){ return i * rMax * 2 + rMax })
+      .attr('cy', function(d,i){
+        return (rMax * 2) - scaleRadius(d.value)}); 
+    
   }
 
 
@@ -79,7 +99,8 @@ class App extends Component {
 
           <Row>
             <Col>
-              <div ref={this.chartRef} />
+              <h1>Windsor</h1>
+              <svg width={this.state.graphWidth} height="400" ref={this.chartRef}></svg>
             </Col>
           </Row>
 
