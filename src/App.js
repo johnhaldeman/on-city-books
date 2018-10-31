@@ -11,9 +11,9 @@ class App extends Component {
     {
       city: "Windsor",
       revenue_streams: [
-        { description: "Property Taxes & Payments-In-Lieu of Taxes", calculation: "slc.10X.L9940.C01.01", value: 307577881},
+        { description: "Property Taxes & Payments-In-Lieu", calculation: "slc.10X.L9940.C01.01", value: 307577881},
         { description: "Grants from Other Levels of Government", calculation: "slc.10X.L0899.C01.01 + slc.10X.L0699.C01.01", value: 215492558},
-        { description: "Total user fees and service charges", calculation: "slc.10X.L1299.C01.01", value: 124692455},
+        { description: "Total user fees / service charges", calculation: "slc.10X.L1299.C01.01", value: 124692455},
         { description: "Other Revenues", calculation: "slc.10X.L9910.C01.01 - slc.10X.L9940.C01.01 - slc.10X.L0899.C01.01 - slc.10X.L0699.C01.01 - slc.10X.L1299.C01.01", value: 124920913}
         
         //{ description: "Total Revenues", calculation: "slc.10X.L9910.C01.01", value: 772683807},
@@ -29,6 +29,8 @@ class App extends Component {
     this.chartRef = React.createRef();
 
     let graphWidth = window.innerWidth - 20;
+    if(graphWidth > 1400)
+      graphWidth = 1400;
     let data = this.cityData[0].revenue_streams;
     let rMax = graphWidth / 8;
     let rMin = 0;
@@ -43,7 +45,7 @@ class App extends Component {
       graphWidth: graphWidth,
       rMax: rMax,
       rMain: rMin,
-      graphHeight: scaleRadius(scaleMax) * 2
+      graphHeight: scaleRadius(scaleMax) * 2 + 200
     }
   }
 
@@ -73,10 +75,32 @@ class App extends Component {
       .style("fill", function(d, i) { return color[color.length - (i + 1)]})
       ;
     
-    nodes.append("text")
+      nodes.append("text")
       .attr('y', rMax * 2 + 18)
       .attr("text-anchor", "middle")
-      .text(function(d) {return d.description});
+      .selectAll("tspan")
+      .data(function(d) {
+        let retArr = [];
+        let wordArr = d.description.split(/\s/);
+        let currentString = "";
+        for(let i in wordArr){
+          let word = wordArr[i];
+          currentString = currentString + " " + word;
+          if(currentString.length > 10){
+            retArr.push({text: currentString, offset: scale(d.value)});
+            currentString = "";
+          }
+        }
+        retArr.push({text: currentString, offset: scale(d.value)})
+        return retArr;
+      })
+      .enter().append("tspan")
+        .text(function(d) {return d.text})
+        .attr("font-size", 10)
+        .attr("font-family", "sans-serif")
+        .attr("x", 0)
+        .attr("y", function(d, i, nodes){ return (i - (nodes.length/2 - 1)) * 14 + (rMax * 2) - d.offset } )
+      ;
     
   }
 
