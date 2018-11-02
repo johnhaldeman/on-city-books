@@ -55,6 +55,11 @@ class App extends Component {
     
     let svg = d3.select(this.chartRef.current);
 
+    let textWidth = 10;
+    if(this.state.graphWidth > 700){
+      textWidth = 14
+    }
+
     let scale = this.state.scaleRadius;
     let rMax = this.state.rMax;
 
@@ -76,7 +81,6 @@ class App extends Component {
       ;
     
       nodes.append("text")
-      .attr('y', rMax * 2 + 18)
       .attr("text-anchor", "middle")
       .selectAll("tspan")
       .data(function(d) {
@@ -96,10 +100,10 @@ class App extends Component {
       })
       .enter().append("tspan")
         .text(function(d) {return d.text})
-        .attr("font-size", 10)
+        .attr("font-size", textWidth)
         .attr("font-family", "sans-serif")
         .attr("x", 0)
-        .attr("y", function(d, i, nodes){ return (i - (nodes.length/2 - 1)) * 14 + (rMax * 2) - d.offset } )
+        .attr("y", function(d, i, nodes){ return (i - (nodes.length/2 - 1)) * 14 + (rMax * 2) + nodes.length * 7 } )
       ;
     
   }
