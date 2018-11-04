@@ -8,46 +8,40 @@ export class LinearBubbleChart extends Component {
     
         this.chartRef = React.createRef();
     
-        let graphWidth = window.innerWidth - 20;
-        if(graphWidth > 1400)
-          graphWidth = 1400;
-        let data = props.data;
-        let rMax = graphWidth / 8;
-        let rMin = 0;
-        let scaleMax = d3.max(data, function(d) { return d.value; });
-        let scaleRadius = d3.scaleSqrt()
-          .domain([0, scaleMax])
-          .range([rMin,rMax]);
-    
         this.state = {
-          data: props.data,
-          scaleRadius: scaleRadius,
-          graphWidth: graphWidth,
-          rMax: rMax,
-          rMain: rMin,
-          graphHeight: scaleRadius(scaleMax) * 2 + 50
+          data: props.data
         }
     }
 
     componentDidMount(){
-
         let color = d3.schemeGreens[this.state.data.length + 2];
         
         let svg = d3.select(this.chartRef.current);
+        let width = svg.style("width").replace("px", "");
     
         let textWidth = 10;
-        if(this.state.graphWidth > 700){
+        if(width > 700){
           textWidth = 14
         }
     
-        let scale = this.state.scaleRadius;
-        let rMax = this.state.rMax;
+        let rMax = width / 8;
+        let rMin = 0;
+        
+        let scaleMax = d3.max(this.state.data, function(d) { return d.value; });
+    
+        let scale = d3.scaleSqrt()
+          .domain([0, scaleMax])
+          .range([rMin,rMax]);
+
+        let graphHeight =  scale(scaleMax) * 2 + 50;
+        svg.attr("height", graphHeight);
     
         let nodes = svg.selectAll(".graph")
           .data(this.state.data)
           .enter()
           .append("g")
           .attr("transform", function(d, i) {
+            console.log(rMax);
             let x = i * rMax * 2 + rMax;
             let y = 0;
             return "translate(" + x + "," + y + ")"; 
@@ -60,7 +54,7 @@ export class LinearBubbleChart extends Component {
           .style("fill", function(d, i) { return color[color.length - (i + 1)]})
           ;
         
-          nodes.append("text")
+        nodes.append("text")
           .attr("text-anchor", "middle")
           .selectAll("tspan")
           .data(function(d) {
@@ -89,7 +83,7 @@ export class LinearBubbleChart extends Component {
     }    
 
     render(){        
-        return <svg width="100%" height={this.state.graphHeight + 20} ref={this.chartRef}></svg>
+        return <svg width="100%" ref={this.chartRef}></svg>
     }
 
 }
