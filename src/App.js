@@ -145,7 +145,7 @@ class App extends Component {
           <Row>
             <Col>
               {this.renderCityPills()}
-              &nbsp;&nbsp;&nbsp;&nbsp;<Badge variant="primary" pill >+ Add New City</Badge>
+              &nbsp;&nbsp;&nbsp;&nbsp;<Badge variant="light" pill >+ Add New City</Badge>
               <br/><br/><br/>
             </Col>
           </Row>

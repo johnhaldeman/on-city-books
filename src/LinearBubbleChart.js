@@ -24,7 +24,8 @@ export class LinearBubbleChart extends Component {
     
         this.state = {
           data: props.data,
-          colourProfile: colourProfile
+          colourProfile: colourProfile,
+          numFormat: d3.format(".3s")
         }
     }
 
@@ -66,8 +67,17 @@ export class LinearBubbleChart extends Component {
           .attr('cx', function(d,i){ return 0 })//return i * rMax * 2 + rMax })
           .attr('cy', function(d,i){ return (rMax * 2) - scale(d.value)})
           .style("fill", function(d, i) { return color[color.length - (i + 1)]})
-          ;
+        ;
         
+        let numFormat = this.state.numFormat;
+        nodes.append("text")
+          .attr("text-anchor", "middle")
+          .attr("font-family", "sans-serif")
+          .attr("x", 0)
+          .attr("y", function(d) { return (rMax * 2) - scale(d.value)})
+          .text(function(d) { return numFormat(d.value)})
+          
+
         nodes.append("text")
           .attr("text-anchor", "middle")
           .selectAll("tspan")
