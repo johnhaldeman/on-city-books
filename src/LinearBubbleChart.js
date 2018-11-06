@@ -7,14 +7,29 @@ export class LinearBubbleChart extends Component {
         super(props);
     
         this.chartRef = React.createRef();
+
+        let colourProfile = d3.schemeGreens[props.data.length + 2];
+        if(props.colours === "greens")
+            colourProfile = d3.schemeGreens[props.data.length + 2];
+        else if(props.colours === "blues")
+            colourProfile = d3.schemeBlues[props.data.length + 2];
+        else if(props.colours === "yellows")
+            colourProfile = d3.schemeOranges[props.data.length + 2];
+        else if(props.colours === "purples")
+            colourProfile = d3.schemePurples[props.data.length + 2];
+        else if(props.colours === "reds")
+            colourProfile = d3.schemeReds[props.data.length + 2];
+        else if(props.colours === "greys")
+            colourProfile = d3.schemeGreys[props.data.length + 2];
     
         this.state = {
-          data: props.data
+          data: props.data,
+          colourProfile: colourProfile
         }
     }
 
     componentDidMount(){
-        let color = d3.schemeGreens[this.state.data.length + 2];
+        let color = this.state.colourProfile;
         
         let svg = d3.select(this.chartRef.current);
         let width = svg.style("width").replace("px", "");
@@ -24,7 +39,7 @@ export class LinearBubbleChart extends Component {
           textWidth = 14
         }
     
-        let rMax = width / 8;
+        let rMax = width / (this.state.data.length * 2);
         let rMin = 0;
         
         let scaleMax = d3.max(this.state.data, function(d) { return d.value; });
@@ -41,7 +56,6 @@ export class LinearBubbleChart extends Component {
           .enter()
           .append("g")
           .attr("transform", function(d, i) {
-            console.log(rMax);
             let x = i * rMax * 2 + rMax;
             let y = 0;
             return "translate(" + x + "," + y + ")"; 
