@@ -14,7 +14,7 @@ class App extends Component {
     {
       city: "Windsor",
       revenue_streams: [
-        { description: "Property Taxes & Payments-In-Lieu", calculation: "slc.10X.L9940.C01.01", value: 307577881},
+        { description: "Property Taxes & Payments-In-Lieu", calculation: "slc.10X.L9940.C01.01", value: 607577881},
         { description: "Grants from Other Levels of Government", calculation: "slc.10X.L0899.C01.01 + slc.10X.L0699.C01.01", value: 215492558},
         { description: "Total user fees / service charges", calculation: "slc.10X.L1299.C01.01", value: 124692455},
         { description: "Other Revenues", calculation: "slc.10X.L9910.C01.01 - slc.10X.L9940.C01.01 - slc.10X.L0899.C01.01 - slc.10X.L0699.C01.01 - slc.10X.L1299.C01.01", value: 124920913}
@@ -145,7 +145,8 @@ class App extends Component {
           <Row>
             <Col>
               {this.renderCityPills()}
-              &nbsp;&nbsp;&nbsp;&nbsp;<Badge variant="light" pill >+ Add New City</Badge>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <Badge style={{"borderStyle": "solid", "borderColor": "LightSlateGrey"}} variant="light" pill >+ Add New City</Badge>
               <br/><br/><br/>
             </Col>
           </Row>

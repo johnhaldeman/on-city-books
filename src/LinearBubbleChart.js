@@ -69,10 +69,17 @@ export class LinearBubbleChart extends Component {
           .style("fill", function(d, i) { return color[color.length - (i + 1)]})
         ;
         
+        let dataLength = this.state.data.length;
         let numFormat = this.state.numFormat;
         nodes.append("text")
           .attr("text-anchor", "middle")
           .attr("font-family", "sans-serif")
+          .attr("fill", function(d, i){
+              if(i < (dataLength / 2))
+                return "gainsboro"
+              else
+                return "darkslategrey";
+          })
           .attr("x", 0)
           .attr("y", function(d) { return (rMax * 2) - scale(d.value)})
           .text(function(d) { return numFormat(d.value)})
