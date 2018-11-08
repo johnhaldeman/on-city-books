@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-
-
-import {LinearBubbleChart} from './LinearBubbleChart';
-
-
 import { Navbar, Container, DropdownButton, Dropdown, Row, Badge, Col } from 'react-bootstrap';
+import { LinearBubbleChart } from './LinearBubbleChart';
+import { StackedBarChart } from './StackedBarChart';
 
 class App extends Component {
 
@@ -100,9 +97,9 @@ class App extends Component {
     let variants = this.variants;
     return this.cityData.map(function(data, i){
       if(variants[i] !== "info")
-        return (<Badge variant={variants[i]} key={i} pill >&times; {data.city}</Badge>)
+        return (<Badge variant={variants[i]} key={i} pill >&times; {data.city} &nbsp;</Badge>)
       else
-        return (<Badge className="purple" variant={variants[i]} key={i} pill >&times; {data.city}</Badge>)
+        return (<Badge className="purple" variant={variants[i]} key={i} pill >&times; {data.city} &nbsp;</Badge>)
     })
   }
 
@@ -146,12 +143,16 @@ class App extends Component {
             <Col>
               {this.renderCityPills()}
               &nbsp;&nbsp;&nbsp;&nbsp;
-              <Badge style={{"borderStyle": "solid", "borderColor": "LightSlateGrey"}} variant="light" pill >+ Add New City</Badge>
+              <Badge style={{"borderStyle": "solid", "borderColor": "LightSlateGrey"}} variant="light" pill >+ Add New City &nbsp;</Badge>
               <br/><br/><br/>
             </Col>
           </Row>
           <Row>
             {this.renderBubbleGraphs()}
+          </Row>
+
+          <Row>
+            <StackedBarChart></StackedBarChart>
           </Row>
 
         </Container>
