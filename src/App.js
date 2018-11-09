@@ -11,10 +11,10 @@ class App extends Component {
     {
       city: "Windsor",
       revenue_streams: [
-        { description: "Property Taxes & Payments-In-Lieu", calculation: "slc.10X.L9940.C01.01", value: 607577881},
-        { description: "Grants from Other Levels of Government", calculation: "slc.10X.L0899.C01.01 + slc.10X.L0699.C01.01", value: 215492558},
-        { description: "Total user fees / service charges", calculation: "slc.10X.L1299.C01.01", value: 124692455},
-        { description: "Other Revenues", calculation: "slc.10X.L9910.C01.01 - slc.10X.L9940.C01.01 - slc.10X.L0899.C01.01 - slc.10X.L0699.C01.01 - slc.10X.L1299.C01.01", value: 124920913}
+        { description: "Property Taxes & Payments-In-Lieu of Taxes", calculation: "slc.10X.L9940.C01.01", value:307577881, years:[288900315.911666,288749211.127934,310164464.30922,407186727.971207,305562361.630298,301005088.86367,445028278.431804,430056757.402335]},
+        { description: "Grants from Other Levels of Government", calculation: "slc.10X.L0899.C01.01 + slc.10X.L0699.C01.01", value:215492558, years:[233002219.393761,273088974.612107,321140219.127231,212651282.517944,202144185.723146,176337732.177074,287965627.797196,306552413.932298]},
+        { description: "Total user fees and service charges (SLC 12 9910 04)", calculation: "slc.10X.L1299.C01.01", value:124692455, years:[118596608.830707,122068279.268446,69306590.7353186,185790777.864867,118269750.987268,84500973.0782404,135636352.447549,132284168.454901]},
+        { description: "Other Revenues", calculation: "slc.10X.L9910.C01.01 - slc.10X.L9940.C01.01 - slc.10X.L0899.C01.01 - slc.10X.L0699.C01.01 - slc.10X.L1299.C01.01", value:124920913, years:[187254647.791769,125353996.59492,66407003.4953499,158075551.437646,131548015.095019,183055038.800944,176627292.560549,183965733.731695]}
       ]
     },
     {
