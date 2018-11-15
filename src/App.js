@@ -12,10 +12,21 @@ class App extends Component {
       city: "Windsor",
       years:  [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016],
       revenue_streams: [
-        { description: "Property Taxes & Payments-In-Lieu of Taxes", calculation: "slc.10X.L9940.C01.01", value:307577881, y_2009: 288900315.911666, y_2010: 288749211.127934, y_2011: 310164464.30922, y_2012:407186727.971207, y_2013:305562361.630298, y_2014: 301005088.86367, y_2015: 445028278.431804, y_2016: 430056757.402335},
-        { description: "Grants from Other Levels of Government", calculation: "slc.10X.L0899.C01.01 + slc.10X.L0699.C01.01", value:215492558, y_2009: 233002219.393761, y_2010: 273088974.612107, y_2011: 321140219.127231, y_2012: 212651282.517944, y_2013: 202144185.723146, y_2014: 176337732.177074, y_2015: 287965627.797196, y_2016: 306552413.932298},
-        { description: "Total user fees and service charges", calculation: "slc.10X.L1299.C01.01", value:124692455, y_2009: 118596608.830707, y_2010: 122068279.268446, y_2011: 69306590.7353186, y_2012: 185790777.864867, y_2013: 118269750.987268, y_2014: 84500973.0782404, y_2015: 135636352.447549, y_2016: 132284168.454901},
-        { description: "Other Revenues", calculation: "slc.10X.L9910.C01.01 - slc.10X.L9940.C01.01 - slc.10X.L0899.C01.01 - slc.10X.L0699.C01.01 - slc.10X.L1299.C01.01", value:124920913,  y_2009: 187254647.791769, y_2010: 125353996.59492, y_2011: 66407003.4953499, y_2012: 158075551.437646, y_2013: 131548015.095019, y_2014: 183055038.800944, y_2015: 176627292.560549, y_2016: 183965733.731695}
+        { description: "Property Taxes & Payments-In-Lieu of Taxes", calculation: "slc.10X.L9940.C01.01", value: 307577881},
+        { description: "Grants from Other Levels of Government", calculation: "slc.10X.L0899.C01.01 + slc.10X.L0699.C01.01", value: 215492558},
+        { description: "Total user fees and service charges (SLC 12 9910 04)", calculation: "slc.10X.L1299.C01.01", value: 124692455},
+        { description: "Other Revenues", calculation: "slc.10X.L9910.C01.01 - slc.10X.L9940.C01.01 - slc.10X.L0899.C01.01 - slc.10X.L0699.C01.01 - slc.10X.L1299.C01.01", value: 124920913}
+      ],
+      year_data: [
+        { year: 2009,  prop_taxes: 194905955.42706, grants: 197191494.556275, user_fees: 99235976.4256422, other: 129991325.343884, total: 621324751.752861},
+        { year: 2010,  prop_taxes: 393217804.075982, grants: 298498196.753965, user_fees: 181240249.60951, other: 183205924.291454, total: 1056162174.73091},
+        { year: 2011,  prop_taxes: 270043741.875023, grants: 232143710.932929, user_fees: 97203021.2779386, other: 132772118.902633, total: 732162592.988523},
+        { year: 2012,  prop_taxes: 179704966.254443, grants: 237851907.684686, user_fees: 63471052.3008117, other: 165738899.779111, total: 646766826.019051},
+        { year: 2013,  prop_taxes: 198107754.932328, grants: 215006919.638603, user_fees: 140314794.222512, other: 183593100.613887, total: 737022569.40733},
+        { year: 2014,  prop_taxes: 184398824.448975, grants: 244710028.554601, user_fees: 120102938.680724, other: 85380474.3957532, total: 634592266.080054},
+        { year: 2015,  prop_taxes: 199372490.148397, grants: 138958190.740235, user_fees: 108357090.922171, other: 145550690.28299, total: 592238462.093793},
+        { year: 2016,  prop_taxes: 395130757.98699, grants: 253856615.836687, user_fees: 76672579.9703716, other: 118322811.300584, total: 843982765.094633}
+
       ]
     },
     {

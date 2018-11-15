@@ -16,28 +16,20 @@ export class StackedBarChart extends Component {
 
     }
 
-    stackedMax(stackedData){
-        let maxPerSeries = stackedData.map(function(arr){
-            return arr.map(function(subarr){
-                return subarr[1];
-            });
-        }).reduce((accumulator, currentValue, currentIndex, array) => {
-            return accumulator.concat(currentValue);
-        }, []);
-
-        return Math.max(...maxPerSeries);
-    }
-
     componentDidMount(){
         let svg = d3.select(this.chartRef.current);
         let width = svg.style("width").replace("px", "");
         svg.attr("height", width);
 
-        let keys = this.state.data.years.map(d => "y_" + d);
-        let stacker = d3.stack().keys( keys );
-        let stackedData = stacker(this.state.data.revenue_streams);
 
-        let max = this.stackedMax(stackedData);
+        let stacker = d3.stack().keys(["prop_taxes", "grants", "user_fees", "other"]);
+
+        let totals = this.state.data.year_data.map(function(d){
+            return d.total;
+        })
+        let max = d3.max(totals);
+
+        let stackedData = stacker(this.state.data.year_data);
 
         let xScale = d3.scaleBand()
             .domain(this.state.data.years)
@@ -52,24 +44,23 @@ export class StackedBarChart extends Component {
         
         let years = this.state.data.years;
         let color = this.state.colorProfile;
-        this.state.data.stackedData = stackedData;
         svg.append("g")
             .selectAll("g")
-            .data(this.state.data.revenue_streams)
+            .data(stackedData)
             .enter().append("g")
               .attr("fill", function(d, i){
                   return color[i]
             })
             .selectAll("rect")
-            .data((d, i) => stackedData[i])
+            .data(d => d)
             .enter().append("rect")
               .attr("x", (d, i) => xScale(years[i]))
               .attr("y", d => {
-                  console.log(d[1]);
-                  console.log(yScale(d[1]));
-                  yScale(d[1]);
+                  return yScale(d[0]);
               })
-              .attr("height", d => yScale(d[0]) - yScale(d[1]))
+              .attr("height", d => {
+                  return yScale(d[1]) - yScale(d[0]);
+              })
               .attr("width", xScale.bandwidth());
         
         // svg.append("g")
