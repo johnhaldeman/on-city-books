@@ -39,7 +39,7 @@ export class StackedBarChart extends Component {
         
         let yScale = d3.scaleLinear()
             .domain([0, max])
-            .rangeRound([0, width]);
+            .range([width, 0]);
         
         
         let years = this.state.data.years;
@@ -56,10 +56,10 @@ export class StackedBarChart extends Component {
             .enter().append("rect")
               .attr("x", (d, i) => xScale(years[i]))
               .attr("y", d => {
-                  return yScale(d[0]);
+                  return yScale(d[1]);
               })
               .attr("height", d => {
-                  return yScale(d[1]) - yScale(d[0]);
+                  return yScale(d[0]) - yScale(d[1]);
               })
               .attr("width", xScale.bandwidth());
         
