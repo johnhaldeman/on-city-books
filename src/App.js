@@ -50,7 +50,7 @@ class App extends Component {
         { year: 2016, prop_taxes: 204316255.183416, grants: 156872407.55885, user_fees: 101381657.702847, other: 122926590.702981, total: 585496911.148094}
 
       ]
-    }/*,
+    },
     {
       city: "Sarnia",
       revenue_streams: [
@@ -58,6 +58,17 @@ class App extends Component {
         { description: "Grants from Other Levels of Government", calculation: "slc.10X.L0899.C01.01 + slc.10X.L0699.C01.01", value: 215492558},
         { description: "Total user fees / service charges", calculation: "slc.10X.L1299.C01.01", value: 307577881},
         { description: "Other Revenues", calculation: "slc.10X.L9910.C01.01 - slc.10X.L9940.C01.01 - slc.10X.L0899.C01.01 - slc.10X.L0699.C01.01 - slc.10X.L1299.C01.01", value: 124692455}
+      ],
+      year_data:[
+        { year: 2009, prop_taxes: 324705754.708326, grants: 239559515.054586, user_fees: 97217234.7085082, other: 62518434.4146244, total: 724000938.886044},
+        { year: 2010, prop_taxes: 194187242.624533, grants: 232035956.421061, user_fees: 113592366.88639, other: 145552389.802935, total: 685367955.734919},
+        { year: 2011, prop_taxes: 419697966.830345, grants: 166716300.570562, user_fees: 139417259.380724, other: 94763633.3846904, total: 820595160.166321},
+        { year: 2012, prop_taxes: 376195779.472612, grants: 268970330.87555, user_fees: 160802904.413812, other: 112730279.213231, total: 918699293.975206},
+        { year: 2013, prop_taxes: 412736893.202107, grants: 133457199.83943, user_fees: 130705677.126025, other: 161447210.600013, total: 838346980.767576},
+        { year: 2014, prop_taxes: 388512447.725527, grants: 134566919.000971, user_fees: 116217294.940834, other: 168257061.01932, total: 807553722.686652},
+        { year: 2015, prop_taxes: 186852713.50285, grants: 133361057.658993, user_fees: 158952308.227735, other: 87691565.2153195, total: 566857644.604897},
+        { year: 2016, prop_taxes: 298624329.955796, grants: 136438352.032525, user_fees: 90195828.3472289, other: 145399486.069118, total: 670657996.404668}
+
       ]
     },
     {
@@ -67,6 +78,16 @@ class App extends Component {
         { description: "Grants from Other Levels of Government", calculation: "slc.10X.L0899.C01.01 + slc.10X.L0699.C01.01", value: 124692455},
         { description: "Total user fees / service charges", calculation: "slc.10X.L1299.C01.01", value: 215492558},
         { description: "Other Revenues", calculation: "slc.10X.L9910.C01.01 - slc.10X.L9940.C01.01 - slc.10X.L0899.C01.01 - slc.10X.L0699.C01.01 - slc.10X.L1299.C01.01", value: 124920913}
+      ],
+      year_data:[
+        { year: 2009, prop_taxes: 390585389.561972, grants: 140165672.897242, user_fees: 65871006.1653452, other: 179933702.225415, total: 776555770.849973},
+        { year: 2010, prop_taxes: 190047780.124435, grants: 171561678.211849, user_fees: 150506682.997711, other: 163669949.920301, total: 675786091.254297},
+        { year: 2011, prop_taxes: 353695005.122571, grants: 156067303.224674, user_fees: 120494329.487825, other: 130256132.939717, total: 760512770.774787},
+        { year: 2012, prop_taxes: 168555920.86194, grants: 286306292.65405, user_fees: 102767919.489509, other: 176835297.734381, total: 734465430.73988},
+        { year: 2013, prop_taxes: 199749949.192574, grants: 207424914.705419, user_fees: 71389777.2792197, other: 164185459.137235, total: 642750100.314448},
+        { year: 2014, prop_taxes: 171827803.414363, grants: 224272877.086695, user_fees: 119351230.335959, other: 128681939.90373, total: 644133850.740746},
+        { year: 2015, prop_taxes: 170243740.698288, grants: 227519483.353549, user_fees: 135766301.901928, other: 184546176.849881, total: 718075702.803646},
+        { year: 2016, prop_taxes: 417936536.832018, grants: 266238821.437914, user_fees: 139543350.427068, other: 89155495.5998091, total: 912874204.29681}
       ]
     },
     {
@@ -76,6 +97,16 @@ class App extends Component {
         { description: "Grants from Other Levels of Government", calculation: "slc.10X.L0899.C01.01 + slc.10X.L0699.C01.01", value: 215492558},
         { description: "Total user fees / service charges", calculation: "slc.10X.L1299.C01.01", value: 124692455},
         { description: "Other Revenues", calculation: "slc.10X.L9910.C01.01 - slc.10X.L9940.C01.01 - slc.10X.L0899.C01.01 - slc.10X.L0699.C01.01 - slc.10X.L1299.C01.01", value: 124920913}
+      ],
+      year_data:[
+        { year: 2009, prop_taxes: 221953578.681196, grants: 295992523.153312, user_fees: 105596617.99798, other: 131298453.637836, total: 754841173.470325},
+        { year: 2010, prop_taxes: 190100555.377052, grants: 110457873.207211, user_fees: 120001232.692436, other: 86189545.9968743, total: 506749207.273573},
+        { year: 2011, prop_taxes: 231292878.595426, grants: 198313803.23741, user_fees: 184500370.085029, other: 181431224.319679, total: 795538276.237545},
+        { year: 2012, prop_taxes: 379472454.750869, grants: 197180864.720818, user_fees: 130710349.607662, other: 128550544.976869, total: 835914214.056218},
+        { year: 2013, prop_taxes: 221619050.133726, grants: 238574435.595319, user_fees: 67732852.0440416, other: 137856916.852492, total: 665783254.625579},
+        { year: 2014, prop_taxes: 365232223.955054, grants: 169468498.801724, user_fees: 125673764.138261, other: 77191520.6897171, total: 737566007.584756},
+        { year: 2015, prop_taxes: 221734969.676156, grants: 153415016.509133, user_fees: 77443916.1083286, other: 65067654.2549858, total: 517661556.548604},
+        { year: 2016, prop_taxes: 281215818.896721, grants: 148593857.094646, user_fees: 100479322.009454, other: 175509997.162829, total: 705798995.163651}
       ]
     },
     {
@@ -85,8 +116,18 @@ class App extends Component {
         { description: "Grants from Other Levels of Government", calculation: "slc.10X.L0899.C01.01 + slc.10X.L0699.C01.01", value: 307577881},
         { description: "Total user fees / service charges", calculation: "slc.10X.L1299.C01.01", value: 124692455},
         { description: "Other Revenues", calculation: "slc.10X.L9910.C01.01 - slc.10X.L9940.C01.01 - slc.10X.L0899.C01.01 - slc.10X.L0699.C01.01 - slc.10X.L1299.C01.01", value: 124920913}
+      ],
+      year_data:[
+        { year: 2009, prop_taxes: 361084574.434201, grants: 181455561.319481, user_fees: 82821195.7186831, other: 81546182.9736186, total: 706907514.445983},
+        { year: 2010, prop_taxes: 440079590.610595, grants: 204374394.650104, user_fees: 70764497.1173255, other: 161022573.986662, total: 876241056.364686},
+        { year: 2011, prop_taxes: 373188391.721683, grants: 122086074.684901, user_fees: 178070463.155026, other: 103513700.167638, total: 776858629.729248},
+        { year: 2012, prop_taxes: 223721140.593521, grants: 197796893.432135, user_fees: 151253651.970168, other: 127187838.695765, total: 699959524.691589},
+        { year: 2013, prop_taxes: 343083590.716924, grants: 241149710.716976, user_fees: 101219003.369168, other: 151133118.245347, total: 836585423.048414},
+        { year: 2014, prop_taxes: 220095939.612556, grants: 280169853.935274, user_fees: 149114533.221509, other: 186977898.092226, total: 836358224.861565},
+        { year: 2015, prop_taxes: 350072771.09169, grants: 285385062.720618, user_fees: 98106332.3811053, other: 106171761.559527, total: 839735927.752941},
+        { year: 2016, prop_taxes: 362278155.584148, grants: 261485529.020079, user_fees: 132558106.290402, other: 80849044.1135473, total: 837170835.008176}
       ]
-    }*/
+    }
   ];
 
   colours = [

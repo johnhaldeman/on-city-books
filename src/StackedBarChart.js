@@ -19,8 +19,12 @@ export class StackedBarChart extends Component {
 
         let numSeries = this.state.data[0].revenue_streams.length + 1;
         let colorProfiles = [
-            d3.schemeGreens[numSeries],
-            d3.schemeOranges[numSeries]
+            d3.schemeBlues[numSeries + 1],
+            d3.schemeOranges[numSeries + 1],
+            d3.schemeGreens[numSeries + 1],
+            d3.schemeReds[numSeries + 1],
+            d3.schemePurples[numSeries + 1],
+            d3.schemeGreys[numSeries + 1]
         ];
 
         let svg = d3.select(this.chartRef.current);
@@ -73,7 +77,7 @@ export class StackedBarChart extends Component {
                .data(stacks[stacknum])
                .enter().append("g")
                .attr("fill", function(d, i){
-                   return colors[stacknum][i]
+                   return colors[stacknum][colors[0].length  - (i + 1)]
                })
                .selectAll("rect")
                .data(d => d)

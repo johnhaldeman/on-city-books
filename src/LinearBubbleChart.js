@@ -8,19 +8,19 @@ export class LinearBubbleChart extends Component {
     
         this.chartRef = React.createRef();
 
-        let colourProfile = d3.schemeGreens[props.data.length + 2];
+        let colourProfile = d3.schemeGreens[props.data.length + 1];
         if(props.colours === "greens")
-            colourProfile = d3.schemeGreens[props.data.length + 2];
+            colourProfile = d3.schemeGreens[props.data.length + 1];
         else if(props.colours === "blues")
-            colourProfile = d3.schemeBlues[props.data.length + 2];
+            colourProfile = d3.schemeBlues[props.data.length + 1];
         else if(props.colours === "yellows")
-            colourProfile = d3.schemeOranges[props.data.length + 2];
+            colourProfile = d3.schemeOranges[props.data.length + 1];
         else if(props.colours === "purples")
-            colourProfile = d3.schemePurples[props.data.length + 2];
+            colourProfile = d3.schemePurples[props.data.length + 1];
         else if(props.colours === "reds")
-            colourProfile = d3.schemeReds[props.data.length + 2];
+            colourProfile = d3.schemeReds[props.data.length + 1];
         else if(props.colours === "greys")
-            colourProfile = d3.schemeGreys[props.data.length + 2];
+            colourProfile = d3.schemeGreys[props.data.length + 1];
     
         this.state = {
           data: props.data,
