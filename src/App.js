@@ -220,6 +220,11 @@ class App extends Component {
           <Row>
             <Col>
               <StackedBarChart data={this.cityData} years={this.years}></StackedBarChart>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              
             </Col>
           </Row>
 

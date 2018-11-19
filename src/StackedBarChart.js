@@ -47,43 +47,58 @@ export class StackedBarChart extends Component {
         let stacks = [];
         for(let i in this.state.data){
             let stackArr = stacker(this.state.data[i].year_data);
+            stackArr.city = this.state.data[i].city;
             stacks.push(stackArr);
         }
 
-        let xDomain = [];
-        for (let i in this.state.years){
-            for(let j in this.state.data){
-                xDomain.push(this.state.years[i] + "_" + j);
-            }
+        let xGroups = [];
+        for(let i in this.state.data){
+            xGroups.push(this.state.data[i].city);
         }
-
-        let xScale = d3.scaleBand()
-            .domain(xDomain)
+        
+        let xGroupScale = d3.scaleBand()
+            .domain(xGroups)
             .rangeRound([0, width])
             .padding(0.08);
+
+        let xScale = d3.scaleBand()
+            .domain(this.state.years).rangeRound([0, xGroupScale.bandwidth()]);
 
         
         let yScale = d3.scaleLinear()
             .domain([0, max])
-            .range([width / 2, 0]);
+            .range([width / 2 - 20, 0]);
         
         
         let years = this.state.years;
         let colors = colorProfiles;
+        let currParentIndex = 0;
 
-        for(let stacknum in stacks){
+        //for(let stacknum in stacks){
             svg.append("g")
                .selectAll("g")
-               .data(stacks[stacknum])
+               .data(stacks)
                .enter().append("g")
-               .attr("fill", function(d, i){
-                   return colors[stacknum][colors[0].length  - (i + 1)]
-               })
+                  .attr("transform", function(d, i) {
+                      return "translate(" + xGroupScale(d.city) + ",0)"; 
+                   })
+                .selectAll("g")
+                .data(d => d)
+                .enter().append("g")
+                .attr("fill", function(d, i){
+                    let colour = colors[currParentIndex][colors[0].length  - (i + 1)]
+                    
+                    if( i === colors[0].length - 3){
+                        currParentIndex++;
+                    }
+                    
+                    return colour;
+                })
                .selectAll("rect")
-               .data(d => d)
-               .enter().append("rect")
+               .data(d => d).enter()
+               .append("rect")
                .attr("x", (d, i) => {
-                   return xScale(years[i] + "_" + stacknum)
+                   return xScale(years[i])
                })
                .attr("y", d => {
                    return yScale(d[1]);
@@ -92,11 +107,17 @@ export class StackedBarChart extends Component {
                    return yScale(d[0]) - yScale(d[1]);
                })
                .attr("width", xScale.bandwidth());
-        }
+        //}
         
+        let xAxisScale = d3.scaleBand()
+            .domain(xGroups)
+            .rangeRound([0, width])
+            .padding(0.08);
         
-        // svg.append("g")
-        //      .call(xAxis);
+        svg.append("g")
+            .attr("transform", `translate(0,${width / 2 - 20})`)
+            .call(d3.axisBottom(xAxisScale).tickSizeOuter(0))
+            .call(g => g.selectAll(".domain").remove());
         
         //svg.append("g")
         //      .call(yAxis);
