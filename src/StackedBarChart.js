@@ -58,31 +58,39 @@ export class StackedBarChart extends Component {
         
         let xGroupScale = d3.scaleBand()
             .domain(xGroups)
-            .rangeRound([0, width])
+            .rangeRound([15, width])
             .padding(0.08);
 
         let xScale = d3.scaleBand()
-            .domain(this.state.years).rangeRound([0, xGroupScale.bandwidth()]);
+            .domain(this.state.years)
+            .rangeRound([0, xGroupScale.bandwidth()])
+            .padding(0.08);
+            ;
 
         
         let yScale = d3.scaleLinear()
             .domain([0, max])
-            .range([width / 2 - 20, 0]);
+            .range([width / 2 - 40, 0]);
         
         
         let years = this.state.years;
         let colors = colorProfiles;
         let currParentIndex = 0;
 
-        //for(let stacknum in stacks){
-            svg.append("g")
+        let xAxisScale = d3.scaleBand()
+            .domain(xScale)
+            .rangeRound([0, width])
+            .padding(0.08);
+
+        let cityGroup = svg.append("g")
                .selectAll("g")
                .data(stacks)
                .enter().append("g")
                   .attr("transform", function(d, i) {
                       return "translate(" + xGroupScale(d.city) + ",0)"; 
                    })
-                .selectAll("g")
+
+        let seriesGroup = cityGroup.selectAll("g")
                 .data(d => d)
                 .enter().append("g")
                 .attr("fill", function(d, i){
@@ -94,7 +102,8 @@ export class StackedBarChart extends Component {
                     
                     return colour;
                 })
-               .selectAll("rect")
+
+        let valueGroup = seriesGroup.selectAll("rect")
                .data(d => d).enter()
                .append("rect")
                .attr("x", (d, i) => {
@@ -107,26 +116,52 @@ export class StackedBarChart extends Component {
                    return yScale(d[0]) - yScale(d[1]);
                })
                .attr("width", xScale.bandwidth());
-        //}
         
-        let xAxisScale = d3.scaleBand()
+        let yearAxis = seriesGroup
+            .append("g")
+            .attr("transform", `translate(0,${width / 2 - 40})`)
+            .call(d3.axisBottom(xScale).tickSizeOuter(0))
+            .call(g => g.selectAll(".domain").remove())
+
+        if(width < 600){
+            let ticks = yearAxis.selectAll(".tick text");
+            ticks.attr("class", function(d,i){
+                if(i === 0){
+                    d3.select(this).attr("text-anchor", "start")
+                        .attr("font-size", 8)
+                }
+                else if(i === years.length - 1 ) {
+                    d3.select(this).attr("text-anchor", "end")
+                        .attr("font-size", 8)
+                }
+                else{
+                    d3.select(this).remove();
+                }
+            });
+        }
+        else if(width < 1200){
+            let ticks = yearAxis.selectAll(".tick text");
+            ticks.attr("class", function(d,i){
+                if(i%2 != 0) d3.select(this).remove();
+            });
+        }
+        
+        let xAxisGroupScale = d3.scaleBand()
             .domain(xGroups)
             .rangeRound([0, width])
             .padding(0.08);
         
         svg.append("g")
             .attr("transform", `translate(0,${width / 2 - 20})`)
-            .call(d3.axisBottom(xAxisScale).tickSizeOuter(0))
+            .call(d3.axisBottom(xAxisGroupScale).tickSizeInner(0))
             .call(g => g.selectAll(".domain").remove());
-        
-        //svg.append("g")
-        //      .call(yAxis);
-        
-        //svg.append("g")
-        //    .attr("transform", `translate(${width - margin.right},${margin.top})`)
-        //    .call(legend);
 
-        
+        let billionDollarFormat = function(d) { return '$' + d3.format('.1s')(d).replace(/G/, "B"); };
+        svg.append("g")
+            .attr("transform", `translate(50,0)`)
+            .call(d3.axisLeft(yScale).ticks().tickFormat(billionDollarFormat))
+            .call(g => g.selectAll(".domain").remove())
+
     }
 
     render(){        
