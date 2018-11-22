@@ -58,8 +58,8 @@ export class StackedBarChart extends Component {
         
         let xGroupScale = d3.scaleBand()
             .domain(xGroups)
-            .rangeRound([15, width])
-            .padding(0.08);
+            .rangeRound([35, width])
+            .padding(0.04);
 
         let xScale = d3.scaleBand()
             .domain(this.state.years)
@@ -77,7 +77,8 @@ export class StackedBarChart extends Component {
         let colors = colorProfiles;
         let currParentIndex = 0;
 
-        let xAxisScale = d3.scaleBand()
+        // x Axis
+        d3.scaleBand()
             .domain(xScale)
             .rangeRound([0, width])
             .padding(0.08);
@@ -102,8 +103,9 @@ export class StackedBarChart extends Component {
                     
                     return colour;
                 })
-
-        let valueGroup = seriesGroup.selectAll("rect")
+        
+        // Value Group
+        seriesGroup.selectAll("rect")
                .data(d => d).enter()
                .append("rect")
                .attr("x", (d, i) => {
@@ -142,7 +144,7 @@ export class StackedBarChart extends Component {
         else if(width < 1200){
             let ticks = yearAxis.selectAll(".tick text");
             ticks.attr("class", function(d,i){
-                if(i%2 != 0) d3.select(this).remove();
+                if(i%2 !== 0) d3.select(this).remove();
             });
         }
         
@@ -156,10 +158,14 @@ export class StackedBarChart extends Component {
             .call(d3.axisBottom(xAxisGroupScale).tickSizeInner(0))
             .call(g => g.selectAll(".domain").remove());
 
+        let tickNum = 10;
+        if(width < 600){
+            tickNum = 5;
+        }
         let billionDollarFormat = function(d) { return '$' + d3.format('.1s')(d).replace(/G/, "B"); };
         svg.append("g")
-            .attr("transform", `translate(50,0)`)
-            .call(d3.axisLeft(yScale).ticks().tickFormat(billionDollarFormat))
+            .attr("transform", `translate(40,0)`)
+            .call(d3.axisLeft(yScale).ticks(tickNum).tickFormat(billionDollarFormat))
             .call(g => g.selectAll(".domain").remove())
 
     }

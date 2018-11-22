@@ -50,7 +50,7 @@ class App extends Component {
         { year: 2016, prop_taxes: 204316255.183416, grants: 156872407.55885, user_fees: 101381657.702847, other: 122926590.702981, total: 585496911.148094}
 
       ]
-    },
+    }/*,
     {
       city: "Sarnia",
       revenue_streams: [
@@ -127,7 +127,7 @@ class App extends Component {
         { year: 2015, prop_taxes: 350072771.09169, grants: 285385062.720618, user_fees: 98106332.3811053, other: 106171761.559527, total: 839735927.752941},
         { year: 2016, prop_taxes: 362278155.584148, grants: 261485529.020079, user_fees: 132558106.290402, other: 80849044.1135473, total: 837170835.008176}
       ]
-    }
+    }*/
   ];
 
   colours = [
