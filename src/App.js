@@ -16,7 +16,7 @@ class App extends Component {
       revenue_streams: [
         { description: "Property Taxes & Payments-In-Lieu of Taxes", calculation: "slc.10X.L9940.C01.01", value: 307577881},
         { description: "Grants from Other Levels of Government", calculation: "slc.10X.L0899.C01.01 + slc.10X.L0699.C01.01", value: 215492558},
-        { description: "Total user fees and service charges (SLC 12 9910 04)", calculation: "slc.10X.L1299.C01.01", value: 124692455},
+        { description: "Total user fees / service charges", calculation: "slc.10X.L1299.C01.01", value: 124692455},
         { description: "Other Revenues", calculation: "slc.10X.L9910.C01.01 - slc.10X.L9940.C01.01 - slc.10X.L0899.C01.01 - slc.10X.L0699.C01.01 - slc.10X.L1299.C01.01", value: 124920913}
       ],
       year_data: [
@@ -50,7 +50,7 @@ class App extends Component {
         { year: 2016, prop_taxes: 204316255.183416, grants: 156872407.55885, user_fees: 101381657.702847, other: 122926590.702981, total: 585496911.148094}
 
       ]
-    }/*,
+    },
     {
       city: "Sarnia",
       revenue_streams: [
@@ -127,7 +127,7 @@ class App extends Component {
         { year: 2015, prop_taxes: 350072771.09169, grants: 285385062.720618, user_fees: 98106332.3811053, other: 106171761.559527, total: 839735927.752941},
         { year: 2016, prop_taxes: 362278155.584148, grants: 261485529.020079, user_fees: 132558106.290402, other: 80849044.1135473, total: 837170835.008176}
       ]
-    }*/
+    }
   ];
 
   colours = [
@@ -219,7 +219,7 @@ class App extends Component {
 
           <Row>
             <Col>
-              <StackedBarChart data={this.cityData} years={this.years}></StackedBarChart>
+              <StackedBarChart group="year" data={this.cityData} years={this.years}></StackedBarChart>
               <br/>
               <br/>
               <br/>
