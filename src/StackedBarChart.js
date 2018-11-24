@@ -121,7 +121,7 @@ export class StackedBarChart extends Component {
         
         let yScale = d3.scaleLinear()
             .domain([0, max])
-            .range([width / 2 - 40, 0]);
+            .range([width / 2 - 80, 0]);
         
 
         d3.scaleBand()
@@ -182,13 +182,21 @@ export class StackedBarChart extends Component {
            })
         }
         
-        let yearAxis = seriesGroup
+        let xAxisLabels = seriesGroup
             .append("g")
-            .attr("transform", `translate(0,${width / 2 - 40})`)
-            .call(d3.axisBottom(xScale).tickSizeOuter(0))
-            .call(g => g.selectAll(".domain").remove())
+            .attr("transform", `translate(0,${width / 2 - 80})`);
+        
+        xAxisLabels.call(d3.axisBottom(xScale).tickSizeOuter(0))
+            .call(g => g.selectAll(".domain").remove());
 
-        if(width < 600){
+        xAxisLabels.selectAll("text")
+            .attr("y", 0)
+            .attr("x", 9)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(90)")
+            .style("text-anchor", "start");
+
+        /*if(width < 600){
             let ticks = yearAxis.selectAll(".tick text");
             ticks.attr("class", function(d,i){
                 if(i === 0){
@@ -204,21 +212,18 @@ export class StackedBarChart extends Component {
                 }
             });
         }
-        else if(width < 1200){
-            let ticks = yearAxis.selectAll(".tick text");
+        else 
+        */
+        if(width < 700){
+            let ticks = xAxisLabels.selectAll(".tick text");
             ticks.attr("class", function(d,i){
-                if(i%2 !== 0) d3.select(this).remove();
+                if(i % 3 !== 0) d3.select(this).remove();
             });
         }
         
-        let xAxisGroupScale = d3.scaleBand()
-            .domain(xGroups)
-            .rangeRound([0, width])
-            .padding(0.08);
-        
         svg.append("g")
-            .attr("transform", `translate(0,${width / 2 - 20})`)
-            .call(d3.axisBottom(xAxisGroupScale).tickSizeInner(0))
+            .attr("transform", `translate(0, ${width / 2 - 20})`)
+            .call(d3.axisBottom(xGroupScale).tickSizeInner(0))
             .call(g => g.selectAll(".domain").remove());
 
         let tickNum = 10;
