@@ -1,44 +1,50 @@
 let parse = require('csv-parse/lib/sync');
 let fs = require('fs');
-let path = require( 'path' );
+let path = require('path');
 
 let fileDir = "data";
 let outDir = path.join("data", "out");
 
-fs.readdir( fileDir, function( err, files ) {
-    if( err ) {
-        console.error( "Could not list the directory.", err );
-        process.exit( 1 );
-    } 
+fs.readdir(fileDir, function (err, files) {
+    if (err) {
+        console.error("Could not list the directory.", err);
+        process.exit(1);
+    }
 
-    let munis = {};
 
-    files.forEach( function( file, index ) {
-        var location = path.join( fileDir, file );
+    files.forEach(function (file, index) {
+        var location = path.join(fileDir, file);
 
-        if(file.endsWith(".csv")){
+        if (file.endsWith(".csv")) {
             console.log("Processing: " + location);
             let data = fs.readFileSync(location).toString();
-            let records = parse(data, {columns: true});
+            let records = parse(data, { columns: true });
+            let muni = {};
 
-            for(let recordnum in records){
+            let filePath = "";
+            for (let recordnum in records) {
                 let record = records[recordnum];
 
-                let id = record.MUNID.trim();
-                if(munis[id] === undefined){
-                    munis[id] = {
-                        id: id,
-                        desc: record.MUNICIPALITY_DESC
-                    };
+                if (muni.id !== record.MUNID.trim()) {
+                    if(muni.id !== undefined){
+                        console.log("Writing: " + filePath);
+                        fs.writeFileSync(filePath, JSON.stringify(muni));
+                    }
+                    muni = {};
+                    muni.id = record.MUNID.trim();
+                    filePath = path.join(outDir, muni.id  + ".json");
+                    if (fs.existsSync(filePath)) {
+                        let muniData = fs.readFileSync(filePath).toString();
+                        muni = JSON.parse(muniData);
+                    }
+                    muni.desc = record.MUNICIPALITY_DESC;
                 }
-                let muni = munis[id];
 
                 let MARSYEAR = record.MARSYEAR;
-                if(muni[MARSYEAR] === undefined){
+                if (muni[MARSYEAR] === undefined) {
                     muni[MARSYEAR] = {};
                 }
                 let muniyear = muni[MARSYEAR];
-
 
                 let SLC = record.SLC;
                 muniyear[SLC] = {
@@ -49,20 +55,9 @@ fs.readdir( fileDir, function( err, files ) {
                 }
             }
         }
-    } );
+    });
 
-    for(let id in munis){
-        let muni = munis[id];
-
-        fs.writeFile(fs.join(outDir, id + ".json"), JSON.stringify(muni), function(err, data){
-            if (err) console.log(err);
-            console.log("Successfully Written to " + id + ".json");
-        });
-
-    }
-
-
-} );
+});
 
 
 
