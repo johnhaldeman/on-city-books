@@ -22,3 +22,4 @@ yarn-error.log*
 package-lock.json
 data/*.zip
 data/*.csv
+data/out/*.json

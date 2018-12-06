@@ -11,6 +11,8 @@ fs.readdir(fileDir, function (err, files) {
         process.exit(1);
     }
 
+    let descs = {};
+
 
     files.forEach(function (file, index) {
         var location = path.join(fileDir, file);
@@ -49,13 +51,18 @@ fs.readdir(fileDir, function (err, files) {
                 let SLC = record.SLC;
                 muniyear[SLC] = {
                     amount: Number(record.AMOUNT),
-                    value_text: record.VALUE_TEXT,
+                    value_text: record.VALUE_TEXT
+                }
+
+                descs[SLC] = {
                     line_desc: record.SCHEDULE_LINE_DESC,
                     column_desc: record.SCHEDULE_COLUMN_DESC
                 }
             }
         }
     });
+
+    fs.writeFileSync(path.join(outDir, "descs.json"), JSON.stringify(descs));
 
 });
 
