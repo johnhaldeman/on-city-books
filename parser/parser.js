@@ -12,6 +12,7 @@ fs.readdir(fileDir, function (err, files) {
     }
 
     let descs = {};
+    let muniList = {};
 
 
     files.forEach(function (file, index) {
@@ -40,6 +41,10 @@ fs.readdir(fileDir, function (err, files) {
                         muni = JSON.parse(muniData);
                     }
                     muni.desc = record.MUNICIPALITY_DESC;
+
+                    muniList[muni.id] = {
+                        name: muni.desc
+                    }
                 }
 
                 let MARSYEAR = record.MARSYEAR;
@@ -63,6 +68,7 @@ fs.readdir(fileDir, function (err, files) {
     });
 
     fs.writeFileSync(path.join(outDir, "descs.json"), JSON.stringify(descs));
+    fs.writeFileSync(path.join(outDir, "muniList.json"), JSON.stringify(muniList));
 
 });
 
