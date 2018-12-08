@@ -63,6 +63,15 @@ fs.readdir(fileDir, function (err, files) {
                     line_desc: record.SCHEDULE_LINE_DESC,
                     column_desc: record.SCHEDULE_COLUMN_DESC
                 }
+
+                if(SLC.trim() === "slc.02X.L0041.C01.01"){
+                    muniList[muni.id].population = Number(record.AMOUNT);
+                    muniList[muni.id].population_year = MARSYEAR;
+                }
+                else if(SLC.trim() === "slc.02X.L0040.C01.01"){
+                    muniList[muni.id].households = Number(record.AMOUNT);
+                    muniList[muni.id].households_year = MARSYEAR;
+                }
             }
         }
     });
