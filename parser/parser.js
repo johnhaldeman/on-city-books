@@ -43,7 +43,8 @@ fs.readdir(fileDir, function (err, files) {
                     muni.desc = record.MUNICIPALITY_DESC;
 
                     muniList[muni.id] = {
-                        name: muni.desc
+                        name: muni.desc,
+                        tier: record.TIER_CODE
                     }
                 }
 

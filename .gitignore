@@ -23,3 +23,4 @@ package-lock.json
 data/*.zip
 data/*.csv
 data/out/*.json
+public/munis/*/*.json
