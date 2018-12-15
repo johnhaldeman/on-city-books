@@ -14,6 +14,7 @@ class App extends Component {
         <Router>
           <div>
             <Route path="/:page(revenue|expense|defisurp)/:aggregate(total|capita|household|percentage)" exact component={StatePage} />
+            <Route path="/" exact component={StatePage} />
           </div>
         </Router>
       </div>
