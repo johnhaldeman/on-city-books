@@ -5,7 +5,24 @@ import {RevenuePage} from './RevenuePage';
 import {ExpensePage} from './ExpensePage';
 import {DefisurpPage} from './DefisurpPage';
 
+
+function DropDownItem(props){
+  let className = "dropdown-item";
+  if(props.active){
+    className += " active";
+  }
+
+  return(
+    <Link className={className} to={"/" + props.item + "/" + props.subitem}>{props.name}</Link>
+  )
+}
+
 export class StatePage extends Component {
+
+    constructor(props){
+      super(props);
+
+    }
 
     renderGraphSection(type){
       if(type === "revenue"){
@@ -34,6 +51,23 @@ export class StatePage extends Component {
           statsHeader = "Deficits/Surpluses";
         }
 
+        let agg = "total";
+        let aggHeader = "Total Value";
+
+        if(this.props.match.params.aggregate !== undefined){
+            agg = this.props.match.params.aggregate;
+        }
+
+        if(agg === "capita"){
+          aggHeader = "Per Capita";
+        }
+        else if(agg === "household"){
+          aggHeader = "Per Household";
+        }
+        else if(agg === "percentage"){
+          aggHeader = "As Percentage";
+        }
+
         return (
         <div>  
           <Navbar bg="dark" variant="dark" collapseOnSelect expand="md">
@@ -48,15 +82,15 @@ export class StatePage extends Component {
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">
               <DropdownButton className="pad-right" variant="danger" id="dropdown-basic-button" title={statsHeader}>
-                <Link className="dropdown-item" to="/revenue/total">Revenues </Link>
-                <Link className="dropdown-item" to="/expense/total">Expenses </Link>
-                <Link className="dropdown-item" to="/defisurp/total">Deficits/Surpluses </Link>
+                <DropDownItem  item="revenue" subitem={agg} active={statsType === "revenue"} name="Revenues"></DropDownItem>
+                <DropDownItem  item="expense" subitem={agg} active={statsType === "expense"} name="Expenses"></DropDownItem>
+                <DropDownItem  item="defisurp" subitem={agg} active={statsType === "defisurp"} name="Deficits/Surpluses"></DropDownItem>
               </DropdownButton>
-              <DropdownButton className="pad-right" variant="success" id="dropdown-basic-button" title="Total Value">
-                <Link className="dropdown-item" to={"/" + statsType + "/total"}>Total Value</Link>
-                <Link className="dropdown-item" to={"/" + statsType + "/capita"}>Per Capita</Link>
-                <Link className="dropdown-item" to={"/" + statsType + "/household"}>Per Household</Link>
-                <Link className="dropdown-item" to={"/" + statsType + "/percentage"}>As Percentage</Link>
+              <DropdownButton className="pad-right" variant="success" id="dropdown-basic-button" title={aggHeader}>
+                <DropDownItem  item={statsType} subitem="total" active={agg === "total"} name="Total Value"></DropDownItem>
+                <DropDownItem  item={statsType} subitem="capita" active={agg === "capita"} name="Per Capita"></DropDownItem>
+                <DropDownItem  item={statsType} subitem="household" active={agg === "household"} name="Per Household"></DropDownItem>
+                <DropDownItem  item={statsType} subitem="percentage" active={agg === "percentage"} name="As Percentage"></DropDownItem>
               </DropdownButton>
             </Navbar.Collapse>
           </Navbar>
