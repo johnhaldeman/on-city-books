@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import {RevenuePage} from './RevenuePage';
 import {ExpensePage} from './ExpensePage';
 import {DefisurpPage} from './DefisurpPage';
+import axios from 'axios';
 
 
 function DropDownItem(props){
@@ -22,17 +23,33 @@ export class StatePage extends Component {
     constructor(props){
       super(props);
 
+      this.state ={muniData: undefined};
+
+      this.httpClient = axios.create({
+        baseURL: '/munis/v1',
+        timeout: 10000
+      });
+
+      this.httpClient.get('muniList.json')
+        .then((response) => {
+          this.setState({muniData: response.data});
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+
     }
 
     renderGraphSection(type){
       if(type === "revenue"){
-        return <RevenuePage></RevenuePage>
+        return <RevenuePage muniData={this.state.muniData}></RevenuePage>
       }
       else if(type === "expense"){
-        return <ExpensePage></ExpensePage>
+        return <ExpensePage muniData={this.state.muniData}></ExpensePage>
       }
       else if(type === "defisurp"){
-        return <DefisurpPage></DefisurpPage>
+        return <DefisurpPage muniData={this.state.muniData}></DefisurpPage>
       }
     }
 
