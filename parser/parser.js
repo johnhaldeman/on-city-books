@@ -5,6 +5,24 @@ let path = require('path');
 let fileDir = "data";
 let outDir = path.join("data", "out");
 
+function updateList(list, find, field, value){
+    for(let i in list){
+        if(list[i].id === find){
+            list[i][field] = value;
+        }
+    }
+}
+
+function updateMuniList(muni, list){
+    for(let i in list){
+        if(muni.id === list[i].id){
+            list[i] = muni;
+            return;
+        }
+    }
+    list.push(muni);
+}
+
 fs.readdir(fileDir, function (err, files) {
     if (err) {
         console.error("Could not list the directory.", err);
@@ -12,7 +30,7 @@ fs.readdir(fileDir, function (err, files) {
     }
 
     let descs = {};
-    let muniList = {};
+    let muniList = [];
 
 
     files.forEach(function (file, index) {
@@ -21,6 +39,9 @@ fs.readdir(fileDir, function (err, files) {
         if (file.endsWith(".csv")) {
             console.log("Processing: " + location);
             let data = fs.readFileSync(location).toString();
+            data = data.replace("Schedule \"B\"", "Schedule B");
+            data = data.replace("tab \"2\"", "tab 2");
+            data = data.replace("\"youth\"", "youth");
             let records = parse(data, { columns: true });
             let muni = {};
 
@@ -42,10 +63,14 @@ fs.readdir(fileDir, function (err, files) {
                     }
                     muni.desc = record.MUNICIPALITY_DESC;
 
-                    muniList[muni.id] = {
-                        name: muni.desc,
-                        tier: record.TIER_CODE
-                    }
+                    updateMuniList(
+                        {   
+                            id: muni.id, 
+                            name: muni.desc,
+                            tier: record.TIER_CODE
+                        }
+                        , muniList
+                    );
                 }
 
                 let MARSYEAR = record.MARSYEAR;
@@ -66,12 +91,10 @@ fs.readdir(fileDir, function (err, files) {
                 }
 
                 if(SLC.trim() === "slc.02X.L0041.C01.01"){
-                    muniList[muni.id].population = Number(record.AMOUNT);
-                    muniList[muni.id].population_year = MARSYEAR;
+                    updateList(muniList, muni.id, "population", Number(record.AMOUNT));
                 }
                 else if(SLC.trim() === "slc.02X.L0040.C01.01"){
-                    muniList[muni.id].households = Number(record.AMOUNT);
-                    muniList[muni.id].households_year = MARSYEAR;
+                    updateList(muniList, muni.id, "households", Number(record.AMOUNT));
                 }
             }
         }
