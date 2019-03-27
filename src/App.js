@@ -13,6 +13,11 @@ class App extends Component {
       <div>
         <Router>
           <div>
+            <Route path="/:page(revenue|expense|defisurp)/:aggregate(total|capita|household|percentage)/:city1/:city2/:city3/:city4/:city5" exact component={StatePage} />
+            <Route path="/:page(revenue|expense|defisurp)/:aggregate(total|capita|household|percentage)/:city1/:city2/:city3/:city4" exact component={StatePage} />
+            <Route path="/:page(revenue|expense|defisurp)/:aggregate(total|capita|household|percentage)/:city1/:city2/:city3" exact component={StatePage} />
+            <Route path="/:page(revenue|expense|defisurp)/:aggregate(total|capita|household|percentage)/:city1/:city2" exact component={StatePage} />
+            <Route path="/:page(revenue|expense|defisurp)/:aggregate(total|capita|household|percentage)/:city1" exact component={StatePage} />
             <Route path="/:page(revenue|expense|defisurp)/:aggregate(total|capita|household|percentage)" exact component={StatePage} />
             <Route path="/" exact component={StatePage} />
           </div>

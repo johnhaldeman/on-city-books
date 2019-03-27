@@ -10,7 +10,12 @@ export class RevenuePage extends Component {
                 <Row>
                     <Col>
                         <h1>Revenue Sources for Selected Municipalities</h1>
-                        <CityPills muniData={this.props.muniData} cities={["test1", "test2", "test3", "test4", "test5"]}></CityPills>
+                        <CityPills type={this.props.type} 
+                            agg={this.props.agg} 
+                            citySelected={this.props.citySelected} 
+                            muniData={this.props.muniData} 
+                            cities={this.props.munis}>
+                        </CityPills>
                     </Col>
                 </Row>
             </div>

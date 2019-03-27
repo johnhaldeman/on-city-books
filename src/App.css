@@ -30,3 +30,11 @@
 .rightalign {
   text-align:right;
 }
+
+.smallcell {
+  width: 0.1%;
+}
+
+.pointer-cursor {cursor: pointer;}
+
+.pointer-no {cursor: not-allowed;}

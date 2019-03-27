@@ -38,9 +38,9 @@ export class CitySelectionModal extends Component{
     }
 
     headerData = [
-            {key: "name", name: "Municipality Name", rightalign: false},
-            {key: "households", name: "# Households", rightalign: true},
-            {key: "population", name: "# Residents", rightalign: true}
+            {key: "name", name: "Municipality Name", rightalign: false, largecell: true},
+            {key: "households", name: "# Households", rightalign: true, largecell: false},
+            {key: "population", name: "# Residents", rightalign: true, largecell: false}
     ];
 
     sortBy(key){
@@ -76,8 +76,14 @@ export class CitySelectionModal extends Component{
         return retData;
     }
 
+    selectCity(muni){
+        return () => {
+            this.props.citySelected(muni);
+        }
+    }
+
     getRow(headerData){
-        return function(muniData, id){
+        return (muniData, id) => {
             let row = headerData.map(d => {
                 let classes = "";
                 if(d.rightalign){
@@ -85,7 +91,9 @@ export class CitySelectionModal extends Component{
                 }
                 return <td className={classes} key={id + "-" + d.key}>{muniData[d.key]}</td>
             })
-            return <tr key={id}>{row}</tr>;
+            return (<tr onClick={this.selectCity(muniData)} key={id} >
+                        {row}
+                    </tr>);
         }
     }
     
@@ -152,7 +160,8 @@ export class CitySelectionModal extends Component{
                         </DropdownButton>
                     </div>
                     <br/><br/>
-                    <table className="table table-bordered table-striped table-sm table-hover table-100pc">
+                    <h4>Select a municipality to add:</h4>
+                    <table className="table table-bordered table-striped table-sm table-hover table-100pc pointer-cursor">
                         <thead>
                             <tr>
                                 {this.getHeaders()}

@@ -41,9 +41,14 @@ export class StatePage extends Component {
 
     }
 
-    renderGraphSection(type){
+    citySelected = (muni) => {
+      // TODO: Pull Pills up here and then add municipality to pill list
+      console.log(muni);
+    }
+
+    renderGraphSection(type, agg, munis){
       if(type === "revenue"){
-        return <RevenuePage muniData={this.state.muniData}></RevenuePage>
+        return <RevenuePage muniData={this.state.muniData} type={type} agg={agg} munis={munis}></RevenuePage>
       }
       else if(type === "expense"){
         return <ExpensePage muniData={this.state.muniData}></ExpensePage>
@@ -53,9 +58,45 @@ export class StatePage extends Component {
       }
     }
 
+    findMuni(id){
+      for(let muni of this.state.muniData){
+        if(muni.id === id){
+          return muni;
+        }
+      }
+      return {};
+    }
+
+    findMunis(){
+      if(this.state.muniData === undefined){
+        return [];
+      }
+
+      let cities = [];
+
+      if(this.props.match.params.city1){
+        cities.push(this.findMuni(this.props.match.params.city1));
+      }
+      if(this.props.match.params.city2){
+        cities.push(this.findMuni(this.props.match.params.city2));
+      }
+      if(this.props.match.params.city3){
+        cities.push(this.findMuni(this.props.match.params.city3));
+      }
+      if(this.props.match.params.city4){
+        cities.push(this.findMuni(this.props.match.params.city4));
+      }
+      if(this.props.match.params.city5){
+        cities.push(this.findMuni(this.props.match.params.city5));
+      }
+
+      return cities;
+    }
+
     render(){
         let statsType = "revenue";
         let statsHeader = "Revenue";
+        let munis = this.findMunis();
 
         if(this.props.match.params.page !== undefined){
             statsType = this.props.match.params.page;
@@ -115,7 +156,7 @@ export class StatePage extends Component {
           
 
           <Container fluid={true}>
-              {this.renderGraphSection(statsType)}
+              {this.renderGraphSection(statsType, agg, munis)}
           </Container>
         </div>
         )
