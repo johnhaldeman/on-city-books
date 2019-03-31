@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import {RevenuePage} from './RevenuePage';
 import {ExpensePage} from './ExpensePage';
 import {DefisurpPage} from './DefisurpPage';
-import axios from 'axios';
 
 
 function DropDownItem(props){
@@ -23,43 +22,24 @@ export class StatePage extends Component {
     constructor(props){
       super(props);
 
-      this.state ={muniData: undefined};
+      this.state ={munis: {}};
 
-      this.httpClient = axios.create({
-        baseURL: '/munis/v1',
-        timeout: 10000
-      });
-
-      this.httpClient.get('muniList.json')
-        .then((response) => {
-          this.setState({muniData: response.data});
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-
-    }
-
-    citySelected = (muni) => {
-      // TODO: Pull Pills up here and then add municipality to pill list
-      console.log(muni);
     }
 
     renderGraphSection(type, agg, munis){
       if(type === "revenue"){
-        return <RevenuePage muniData={this.state.muniData} type={type} agg={agg} munis={munis}></RevenuePage>
+        return <RevenuePage muniData={this.props.muniData} type={type} agg={agg} munis={munis}></RevenuePage>
       }
       else if(type === "expense"){
-        return <ExpensePage muniData={this.state.muniData}></ExpensePage>
+        return <ExpensePage muniData={this.props.muniData}></ExpensePage>
       }
       else if(type === "defisurp"){
-        return <DefisurpPage muniData={this.state.muniData}></DefisurpPage>
+        return <DefisurpPage muniData={this.props.muniData}></DefisurpPage>
       }
     }
 
     findMuni(id){
-      for(let muni of this.state.muniData){
+      for(let muni of this.props.muniData){
         if(muni.id === id){
           return muni;
         }
@@ -68,7 +48,7 @@ export class StatePage extends Component {
     }
 
     findMunis(){
-      if(this.state.muniData === undefined){
+      if(this.props.muniData === undefined){
         return [];
       }
 
@@ -83,14 +63,14 @@ export class StatePage extends Component {
       if(this.props.match.params.city3){
         cities.push(this.findMuni(this.props.match.params.city3));
       }
-      if(this.props.match.params.city4){
-        cities.push(this.findMuni(this.props.match.params.city4));
-      }
-      if(this.props.match.params.city5){
-        cities.push(this.findMuni(this.props.match.params.city5));
-      }
 
       return cities;
+    }
+
+    componentDidMount(){
+      let munis = this.findMunis();
+
+      this.props.selectCities(munis);
     }
 
     render(){
@@ -157,6 +137,7 @@ export class StatePage extends Component {
 
           <Container fluid={true}>
               {this.renderGraphSection(statsType, agg, munis)}
+              <p>{JSON.stringify(this.props.cities.map((d)=> d.desc))}</p>
           </Container>
         </div>
         )

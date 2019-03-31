@@ -16,9 +16,9 @@ export class CityPills extends Component {
 
     variants = [
         "primary",
-        "warning",
         "success",
         "danger",
+        "warning",
         "info",
         "dark"
       ];
@@ -86,7 +86,7 @@ export class CityPills extends Component {
                 <br/>
                 {this.getPills()}
                 &nbsp; &nbsp;&nbsp;&nbsp;
-                <Button size="sm" disabled={this.props.cities.length >= 5} onClick={this.handleShow} className={this.props.cities.length <= 4 ? "full-size-text pointer-cursor" : "full-size-text pointer-no"} variant="dark" >+ Add New City &nbsp;</Button>
+                <Button size="sm" disabled={this.props.cities.length >= 3} onClick={this.handleShow} className={this.props.cities.length <= 2 ? "full-size-text pointer-cursor" : "full-size-text pointer-no"} variant="dark" >+ Add New City &nbsp;</Button>
                 <br/><br/>
 
                 <CitySelectionModal citySelected={this.citySelected} currentURL={this.props.currentURL} muniData={this.props.muniData} show={this.state.show} onHide={this.handleHide}></CitySelectionModal>
