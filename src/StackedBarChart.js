@@ -196,24 +196,6 @@ export class StackedBarChart extends Component {
             .attr("transform", "rotate(90)")
             .style("text-anchor", "start");
 
-        /*if(width < 600){
-            let ticks = yearAxis.selectAll(".tick text");
-            ticks.attr("class", function(d,i){
-                if(i === 0){
-                    d3.select(this).attr("text-anchor", "start")
-                        .attr("font-size", 8)
-                }
-                else if(i === xScaleDomain.length - 1 ) {
-                    d3.select(this).attr("text-anchor", "end")
-                        .attr("font-size", 8)
-                }
-                else{
-                    d3.select(this).remove();
-                }
-            });
-        }
-        else 
-        */
         if(width < 700){
             let ticks = xAxisLabels.selectAll(".tick text");
             ticks.attr("class", function(d,i){

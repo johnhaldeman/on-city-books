@@ -24,12 +24,15 @@ export class LinearBubbleChart extends Component {
     
         this.state = {
           data: props.data,
-          colourProfile: colourProfile,
-          numFormat: d3.format(".3s")
+          colourProfile: colourProfile
         }
     }
 
     componentDidMount(){
+        if(this.props.data === undefined || this.props.data.length === 0){
+          return;
+        }
+
         let color = this.state.colourProfile;
         
         let svg = d3.select(this.chartRef.current);
@@ -43,8 +46,9 @@ export class LinearBubbleChart extends Component {
         let rMax = width / (this.state.data.length * 2);
         let rMin = 0;
         
-        let scaleMax = d3.max(this.state.data, function(d) { return d.value; });
-    
+        //let scaleMax = d3.max(this.state.data, function(d) { return d.value; });
+        let scaleMax = this.props.maxValue;
+
         let scale = d3.scaleSqrt()
           .domain([0, scaleMax])
           .range([rMin,rMax]);
@@ -61,16 +65,22 @@ export class LinearBubbleChart extends Component {
             let y = 0;
             return "translate(" + x + "," + y + ")"; 
           });
-    
+          
+        
         nodes.append("circle")
           .attr('r', function(d) { return scale(d.value)})
-          .attr('cx', function(d,i){ return 0 })//return i * rMax * 2 + rMax })
+          .attr('cx', function(d,i){ return 0 })
           .attr('cy', function(d,i){ return (rMax * 2) - scale(d.value)})
           .style("fill", function(d, i) { return color[color.length - (i + 1)]})
         ;
         
         let dataLength = this.state.data.length;
-        let numFormat = this.state.numFormat;
+
+        
+        let numFormat = d3.format(".3s");
+        if(this.props.type === "percentage"){
+          numFormat = d3.format(".0%");
+        }
         nodes.append("text")
           .attr("text-anchor", "middle")
           .attr("font-family", "sans-serif")

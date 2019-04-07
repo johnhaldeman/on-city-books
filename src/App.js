@@ -4,7 +4,6 @@ import './App.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { StatePage } from './StatPage.js';
 import axios from 'axios';
-import { CityPills } from './CityPills';
 
 class App extends Component {
 
@@ -19,8 +18,6 @@ class App extends Component {
       baseURL: '/munis/v1',
       timeout: 10000
     });
-
-    console.log("constructor");
 
     this.httpClient.get('muniList.json')
       .then((response) => {
@@ -50,7 +47,7 @@ class App extends Component {
   }
 
   getStatePage(){
-    return (props) => <StatePage cities={this.state.munis} muniData={this.state.muniData} selectCities={this.selectCities()} {...props} />
+    return (props) => <StatePage cities={this.state.munis} selectedCities={this.state.selectedCities} muniData={this.state.muniData} selectCities={this.selectCities()} {...props} />
   }
 
   selectCities(){
@@ -77,7 +74,7 @@ class App extends Component {
           this.currentCities.push(munis[i].id);
         }
 
-        this.setState({munis: newmunis}); 
+        this.setState({munis: newmunis, selectedCities: munis}); 
       }
     }
   }

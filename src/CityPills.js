@@ -16,11 +16,11 @@ export class CityPills extends Component {
 
     variants = [
         "primary",
-        "success",
-        "danger",
         "warning",
+        "success",
+        "dark",
         "info",
-        "dark"
+        "danger"
       ];
 
     getPills(){
