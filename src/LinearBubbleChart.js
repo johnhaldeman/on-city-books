@@ -21,14 +21,16 @@ export class LinearBubbleChart extends Component {
             colourProfile = d3.schemeReds[props.data.length + 1];
         else if(props.colours === "greys")
             colourProfile = d3.schemeGreys[props.data.length + 1];
+
+        this.scale = d3.scaleSqrt();
     
         this.state = {
-          data: props.data,
           colourProfile: colourProfile
         }
     }
 
-    componentDidMount(){
+    d3Render(){
+
         if(this.props.data === undefined || this.props.data.length === 0){
           return;
         }
@@ -43,21 +45,20 @@ export class LinearBubbleChart extends Component {
           textWidth = 14
         }
     
-        let rMax = width / (this.state.data.length * 2);
+        let rMax = width / (this.props.data.length * 2);
         let rMin = 0;
         
         //let scaleMax = d3.max(this.state.data, function(d) { return d.value; });
         let scaleMax = this.props.maxValue;
 
-        let scale = d3.scaleSqrt()
-          .domain([0, scaleMax])
-          .range([rMin,rMax]);
+        this.scale.domain([0, scaleMax]);
+        this.scale.range([rMin,rMax]);
 
-        let graphHeight =  scale(scaleMax) * 2 + 50;
+        let graphHeight =  this.scale(scaleMax) * 2 + 50;
         svg.attr("height", graphHeight);
     
         let nodes = svg.selectAll(".graph")
-          .data(this.state.data)
+          .data(this.props.data)
           .enter()
           .append("g")
           .attr("transform", function(d, i) {
@@ -68,13 +69,13 @@ export class LinearBubbleChart extends Component {
           
         
         nodes.append("circle")
-          .attr('r', function(d) { return scale(d.value)})
+          .attr('r', d => { return this.scale(d.value)})
           .attr('cx', function(d,i){ return 0 })
-          .attr('cy', function(d,i){ return (rMax * 2) - scale(d.value)})
+          .attr('cy', (d,i) => { return (rMax * 2) - this.scale(d.value)})
           .style("fill", function(d, i) { return color[color.length - (i + 1)]})
         ;
         
-        let dataLength = this.state.data.length;
+        let dataLength = this.props.data.length;
 
         
         let numFormat = d3.format(".3s");
@@ -91,14 +92,14 @@ export class LinearBubbleChart extends Component {
                 return "darkslategrey";
           })
           .attr("x", 0)
-          .attr("y", function(d) { return (rMax * 2) - scale(d.value)})
+          .attr("y", (d) => { return (rMax * 2) - this.scale(d.value)})
           .text(function(d) { return numFormat(d.value)})
           
 
         nodes.append("text")
           .attr("text-anchor", "middle")
           .selectAll("tspan")
-          .data(function(d) {
+          .data((d) => {
             let retArr = [];
             let wordArr = d.description.split(/\s/);
             let currentString = "";
@@ -106,11 +107,11 @@ export class LinearBubbleChart extends Component {
               let word = wordArr[i];
               currentString = currentString + " " + word;
               if(currentString.length > 10){
-                retArr.push({text: currentString, offset: scale(d.value)});
+                retArr.push({text: currentString, offset: this.scale(d.value)});
                 currentString = "";
               }
             }
-            retArr.push({text: currentString, offset: scale(d.value)})
+            retArr.push({text: currentString, offset: this.scale(d.value)})
             return retArr;
           })
           .enter().append("tspan")
@@ -121,9 +122,19 @@ export class LinearBubbleChart extends Component {
             .attr("y", function(d, i, nodes){ return (i - (nodes.length/2 - 1)) * 14 + (rMax * 2) + nodes.length * 7 } )
           ;
         
-    }    
+    }
 
-    render(){        
+    componentDidMount(){
+      this.d3Render();
+    }
+
+    componentDidUpdate(){
+      let svg = d3.select(this.chartRef.current);
+      svg.selectAll("g").remove();
+      this.d3Render();
+    }
+
+    render(){  
         return <svg width="100%" ref={this.chartRef}></svg>
     }
 

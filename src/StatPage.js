@@ -14,8 +14,20 @@ function DropDownItem(props) {
     className += " active";
   }
 
+  let link = "/" + props.item + "/" + props.subitem;
+  if(props.city1){
+    link += "/" + props.city1;
+  }
+  if(props.city2){
+    link += "/" + props.city2;
+  }
+  if(props.city3){
+    link += "/" + props.city3;
+  }
+
+
   return (
-    <Link className={className} to={"/" + props.item + "/" + props.subitem}>{props.name}</Link>
+    <Link className={className} to={link}>{props.name}</Link>
   )
 }
 
@@ -122,15 +134,43 @@ export class StatePage extends Component {
           </Navbar.Collapse>
           <Navbar.Collapse className="justify-content-end">
             <DropdownButton className="pad-right" variant="danger" id="dropdown-basic-button" title={statsHeader}>
-              <DropDownItem item="revenue" subitem={agg} active={statsType === "revenue"} name="Revenues"></DropDownItem>
-              <DropDownItem item="expense" subitem={agg} active={statsType === "expense"} name="Expenses"></DropDownItem>
-              <DropDownItem item="defisurp" subitem={agg} active={statsType === "defisurp"} name="Deficits/Surpluses"></DropDownItem>
+              <DropDownItem item="revenue" subitem={agg} active={statsType === "revenue"} name="Revenues"
+                    city1={this.props.match.params.city1}
+                    city2={this.props.match.params.city2}
+                    city3={this.props.match.params.city3}>
+              </DropDownItem>
+              <DropDownItem item="expense" subitem={agg} active={statsType === "expense"} name="Expenses"
+                    city1={this.props.match.params.city1}
+                    city2={this.props.match.params.city2}
+                    city3={this.props.match.params.city3}>
+              </DropDownItem>
+              <DropDownItem item="defisurp" subitem={agg} active={statsType === "defisurp"} name="Deficits/Surpluses"
+                    city1={this.props.match.params.city1}
+                    city2={this.props.match.params.city2}
+                    city3={this.props.match.params.city3}
+              ></DropDownItem>
             </DropdownButton>
             <DropdownButton className="pad-right" variant="success" id="dropdown-basic-button" title={aggHeader}>
-              <DropDownItem item={statsType} subitem="total" active={agg === "total"} name="Total Value"></DropDownItem>
-              <DropDownItem item={statsType} subitem="capita" active={agg === "capita"} name="Per Capita"></DropDownItem>
-              <DropDownItem item={statsType} subitem="household" active={agg === "household"} name="Per Household"></DropDownItem>
-              <DropDownItem item={statsType} subitem="percentage" active={agg === "percentage"} name="As Percentage"></DropDownItem>
+              <DropDownItem item={statsType} subitem="total" active={agg === "total"} name="Total Value"
+                    city1={this.props.match.params.city1}
+                    city2={this.props.match.params.city2}
+                    city3={this.props.match.params.city3}>
+              </DropDownItem>
+              <DropDownItem item={statsType} subitem="capita" active={agg === "capita"} name="Per Capita"
+                    city1={this.props.match.params.city1}
+                    city2={this.props.match.params.city2}
+                    city3={this.props.match.params.city3}
+              ></DropDownItem>
+              <DropDownItem item={statsType} subitem="household" active={agg === "household"} name="Per Household"
+                    city1={this.props.match.params.city1}
+                    city2={this.props.match.params.city2}
+                    city3={this.props.match.params.city3}>
+              </DropDownItem>
+              <DropDownItem item={statsType} subitem="percentage" active={agg === "percentage"} name="As Percentage"
+                    city1={this.props.match.params.city1}
+                    city2={this.props.match.params.city2}
+                    city3={this.props.match.params.city3}
+              ></DropDownItem>
             </DropdownButton>
           </Navbar.Collapse>
         </Navbar>

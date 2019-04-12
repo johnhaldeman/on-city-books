@@ -219,7 +219,7 @@ class App extends Component {
 
           <Row>
             <Col>
-              <StackedBarChart group="city" data={this.cityData} years={this.years}></StackedBarChart>
+              <StackedBarChart group="city" keys={["prop_taxes", "grants", "user_fees", "other"]} data={this.cityData} years={this.years}></StackedBarChart>
               <br/>
               <br/>
               <br/>

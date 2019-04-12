@@ -7,21 +7,17 @@ export class StackedBarChart extends Component {
         super(props);
         this.chartRef = React.createRef();
 
-        this.state = {
-            data: props.data,
-            years: props.years
-        }
 
     }
 
     getNumSeries(grouping){
-        return this.state.data[0].revenue_streams.length;
+        return this.props.keys.length;
     }
 
     getMaxData(){
         let alltotals = [];
-        for(let i in this.state.data){
-            let totals = this.state.data[i].year_data.map(function(d){
+        for(let i in this.props.data){
+            let totals = this.props.data[i].year_data.map(function(d){
                 return d.total;
             })
             alltotals = alltotals.concat(totals);
@@ -42,32 +38,32 @@ export class StackedBarChart extends Component {
 
     getStacks(grouping){
 
-        let keys = ["prop_taxes", "grants", "user_fees", "other"];
+        let keys = this.props.keys;
         let stacker = d3.stack().keys(keys);
 
         let stacks = [];
         if(grouping === "year"){
-            for(let i in this.state.data){
-                let stackArr = stacker(this.state.data[i].year_data);
-                stackArr.name = this.state.data[i].city;
+            for(let i in this.props.data){
+                let stackArr = stacker(this.props.data[i].year_data);
+                stackArr.name = this.props.data[i].city;
                 stacks.push(stackArr);
             }
         }
         else{
             let yearGroupedData = [];
             
-            for(let i in this.state.years){
+            for(let i in this.props.years){
                 let cityDataForYear = [];
-                for(let j in this.state.data){
+                for(let j in this.props.data){
                     let doc = {};
                     for(let k in keys){
-                        doc[keys[k]] = this.state.data[j].year_data[i][keys[k]];
+                        doc[keys[k]] = this.props.data[j].year_data[i][keys[k]];
                     }
-                    doc.city = this.state.data[j].city;
+                    doc.city = this.props.data[j].city;
                     cityDataForYear.push(doc);
                 }
                 yearGroupedData.push({
-                    year: this.state.years[i],
+                    year: this.props.years[i],
                     city_data: cityDataForYear
                 })
             }
@@ -84,19 +80,35 @@ export class StackedBarChart extends Component {
 
     getxScaleDomain(grouping){
         if(grouping === "year"){
-            return this.state.years;
+            return this.props.years;
         }
         else{
-            return this.state.data.map(
+            return this.props.data.map(
                 d => d.city
             )
         }
     }
 
     componentDidMount(){
+        this.d3Render();
+    }
+  
+    componentDidUpdate(){
+        let svg = d3.select(this.chartRef.current);
+        svg.selectAll("g").remove();
+        this.d3Render();
+    }
+  
+
+    d3Render(){
+        if(this.props.data.length === 0){
+            return;
+        }
+
         let svg = d3.select(this.chartRef.current);
         let width = svg.style("width").replace("px", "");
-        svg.attr("height", width / 2);
+        let height = width / 3 - 40;
+        svg.attr("height", height);
 
         let numSeries = this.getNumSeries(this.props.group);
         let max = this.getMaxData();
@@ -121,7 +133,7 @@ export class StackedBarChart extends Component {
         
         let yScale = d3.scaleLinear()
             .domain([0, max])
-            .range([width / 2 - 80, 0]);
+            .range([height - 80, 0]);
         
 
         d3.scaleBand()
@@ -139,7 +151,7 @@ export class StackedBarChart extends Component {
                     return "translate(" + xGroupScale(d.name) + ",0)"; 
                 });
 
-        let numCities = this.state.data.length;
+        let numCities = this.props.data.length;
         let colorProfiles = this.getColourSchemes(numSeries + 1);
         let currentSeries = 0;
         let currParentIndex = 0;
@@ -148,7 +160,6 @@ export class StackedBarChart extends Component {
                 .enter().append("g")
                 .attr("class", "series")
                 .attr("fill", function(d, i){
-                    console.log("Series" + i);
                     currParentIndex = Math.floor(currentSeries / numSeries) % numCities ;
                     let colour = colorProfiles[currParentIndex][colorProfiles[0].length  - (i + 1)]
                     currentSeries++;      
@@ -184,7 +195,7 @@ export class StackedBarChart extends Component {
         
         let xAxisLabels = seriesGroup
             .append("g")
-            .attr("transform", `translate(0,${width / 2 - 80})`);
+            .attr("transform", `translate(0,${height - 80})`);
         
         xAxisLabels.call(d3.axisBottom(xScale).tickSizeOuter(0))
             .call(g => g.selectAll(".domain").remove());
@@ -204,7 +215,7 @@ export class StackedBarChart extends Component {
         }
         
         svg.append("g")
-            .attr("transform", `translate(0, ${width / 2 - 20})`)
+            .attr("transform", `translate(0, ${height - 20})`)
             .call(d3.axisBottom(xGroupScale).tickSizeInner(0))
             .call(g => g.selectAll(".domain").remove());
 
