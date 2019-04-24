@@ -38,3 +38,5 @@
 .pointer-cursor {cursor: pointer;}
 
 .pointer-no {cursor: not-allowed;}
+
+.number-text {text-align: end;}

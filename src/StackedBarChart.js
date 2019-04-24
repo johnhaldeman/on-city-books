@@ -108,6 +108,9 @@ export class StackedBarChart extends Component {
         let svg = d3.select(this.chartRef.current);
         let width = svg.style("width").replace("px", "");
         let height = width / 3 - 40;
+        if(height < 600){
+            height = 400;
+        }
         svg.attr("height", height);
 
         let numSeries = this.getNumSeries(this.props.group);
@@ -142,6 +145,7 @@ export class StackedBarChart extends Component {
             .padding(0.08);
 
         let xGroup = svg.append("g")
+                .attr("transform", "translate(0,10)")
                .selectAll("g")
                .data(stacks)
                .enter()
@@ -215,7 +219,7 @@ export class StackedBarChart extends Component {
         }
         
         svg.append("g")
-            .attr("transform", `translate(0, ${height - 20})`)
+            .attr("transform", `translate(0, ${height - 10})`)
             .call(d3.axisBottom(xGroupScale).tickSizeInner(0))
             .call(g => g.selectAll(".domain").remove());
 
@@ -223,9 +227,13 @@ export class StackedBarChart extends Component {
         if(width < 600){
             tickNum = 5;
         }
-        let billionDollarFormat = function(d) { return '$' + d3.format('.1s')(d).replace(/G/, "B"); };
+        let billionDollarFormat = (d) => {                 
+            if(this.props.type === "percentage"){
+                return d3.format(".0%")(d);
+            }
+            return '$' + d3.format('.2s')(d).replace(/G/, "B"); };
         svg.append("g")
-            .attr("transform", `translate(40,0)`)
+            .attr("transform", `translate(40,10)`)
             .call(d3.axisLeft(yScale).ticks(tickNum).tickFormat(billionDollarFormat))
             .call(g => g.selectAll(".domain").remove())
 

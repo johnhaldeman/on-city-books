@@ -77,11 +77,12 @@ export class LinearBubbleChart extends Component {
         
         let dataLength = this.props.data.length;
 
-        
-        let numFormat = d3.format(".3s");
-        if(this.props.type === "percentage"){
-          numFormat = d3.format(".0%");
-        }
+        let numFormat = (d) => {                 
+          if(this.props.type === "percentage"){
+              return d3.format(".0%")(d);
+          }
+          return '$' + d3.format('.2s')(d).replace(/G/, "B"); };
+
         nodes.append("text")
           .attr("text-anchor", "middle")
           .attr("font-family", "sans-serif")
@@ -101,7 +102,7 @@ export class LinearBubbleChart extends Component {
           .selectAll("tspan")
           .data((d) => {
             let retArr = [];
-            let wordArr = d.description.split(/\s/);
+            let wordArr = d.desc.split(/\s/);
             let currentString = "";
             for(let i in wordArr){
               let word = wordArr[i];
