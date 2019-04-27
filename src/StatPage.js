@@ -45,10 +45,10 @@ export class StatePage extends Component {
       return <RevenuePage agg={agg} cities={this.props.cities} selectedCities={this.props.selectedCities}></RevenuePage>
     }
     else if(type === "expense"){
-      return <ExpensePage ></ExpensePage>
+      return <ExpensePage agg={agg} cities={this.props.cities} selectedCities={this.props.selectedCities}></ExpensePage>
     }
     else if(type === "defisurp"){
-      return <DefisurpPage ></DefisurpPage>
+      return <DefisurpPage agg={agg} cities={this.props.cities} selectedCities={this.props.selectedCities}></DefisurpPage>
     }
   }
 
