@@ -35,6 +35,10 @@
   width: 0.1%;
 }
 
+.xaxis{
+  stroke: #000;
+}
+
 .pointer-cursor {cursor: pointer;}
 
 .pointer-no {cursor: not-allowed;}

@@ -81,7 +81,8 @@ export class LinearBubbleChart extends Component {
           if(this.props.type === "percentage"){
               return d3.format(".0%")(d);
           }
-          return '$' + d3.format('.2s')(d).replace(/G/, "B"); };
+          return '$' + d3.format('.2s')(d).replace(/G/, "B"); 
+        };
 
         nodes.append("text")
           .attr("text-anchor", "middle")

@@ -6,6 +6,7 @@ export class StackedBarChart extends Component {
     constructor(props){
         super(props);
         this.chartRef = React.createRef();
+        this.chartDiv = React.createRef();
 
 
     }
@@ -22,7 +23,25 @@ export class StackedBarChart extends Component {
             })
             alltotals = alltotals.concat(totals);
         }
-        return d3.max(alltotals);
+        let max = d3.max(alltotals);
+        return max;
+    }
+
+    getMinData(){
+        let alltotals = [];
+        for(let i in this.props.data){
+            let totals = this.props.data[i].year_data.map(function(d){
+                return d.total;
+            })
+            alltotals = alltotals.concat(totals);
+        }
+        let min = d3.min(alltotals);
+        if(min < 0){
+            return min;
+        }
+        else{
+            return 0;
+        }
     }
 
     getColourSchemes(numSeries){
@@ -115,8 +134,17 @@ export class StackedBarChart extends Component {
 
         let numSeries = this.getNumSeries(this.props.group);
         let max = this.getMaxData();
+        let min = this.getMinData();
 
         let stacks = this.getStacks(this.props.group);
+        for(let year of stacks){
+            for(let field of year){
+                for(let child of field){
+                    child.field = field.key;
+                    child.year = year.name;
+                }
+            }
+        }
 
         let xGroups = [];
         for(let i in stacks){
@@ -135,9 +163,11 @@ export class StackedBarChart extends Component {
             .padding(0.08);
         
         let yScale = d3.scaleLinear()
-            .domain([0, max])
+            .domain([min, max])
             .range([height - 80, 0]);
-        
+        if(isNaN(yScale(0))){
+            return;
+        }
 
         d3.scaleBand()
             .domain(xScale)
@@ -156,7 +186,12 @@ export class StackedBarChart extends Component {
                 });
 
         let numCities = this.props.data.length;
-        let colorProfiles = this.getColourSchemes(numSeries + 1);
+        
+        let numSchemes = 3;
+        if(numSeries > 2){
+            numSchemes = numSeries + 1;
+        }
+        let colorProfiles = this.getColourSchemes(numSchemes);
         let currentSeries = 0;
         let currParentIndex = 0;
         let seriesGroup = xGroup.selectAll("g")
@@ -170,7 +205,49 @@ export class StackedBarChart extends Component {
                                 
                     return colour;
                 });
-        
+
+                        // create a tooltip
+        let Tooltip = d3.select(this.chartDiv.current)
+        .append("div")
+        .style("opacity", 0)
+        .attr("class", "tooltip")
+        .style("background-color", "white")
+        .style("border", "solid")
+        .style("border-width", "2px")
+        .style("border-radius", "5px")
+        .style("padding", "5px")
+
+        let numFormat = (d) => {                 
+            if(this.props.type === "percentage"){
+                return d3.format(".0%")(d);
+            }
+            return '$' + d3.format(',')(d); 
+        };
+
+        // Three function that change the tooltip when user hover / move / leave a cell
+        let mouseover = function (d) {
+            Tooltip
+                .style("opacity", 1)
+            d3.select(this)
+                .style("stroke", "black")
+                .style("opacity", 1)
+        }
+        let mousemove = function (d, i, j, k) {
+            let value = numFormat(d[1] - d[0]);
+            Tooltip
+                    .html(d.year + ": " + d.data.city + "<br/>" + d.field + "<br/>" + value)
+                    .style("left", (d3.mouse(svg.node())[0] + 30) + "px")
+                    .style("top", (d3.mouse(svg.node())[1]) + "px")
+        }
+        let mouseleave = function (d) {
+            Tooltip
+                .style("opacity", 0)
+            d3.select(this)
+                .style("stroke", "none")
+                .style("opacity", 0.9)
+        }
+
+
         let bandNum = 0;
         let valueGroup = seriesGroup.selectAll("rect")
                .data(d => d).enter()
@@ -180,12 +257,20 @@ export class StackedBarChart extends Component {
                    return xScale(xScaleDomain[i])
                })
                .attr("y", d => {
-                   return yScale(d[1]);
+                   if(d[1] < 0){
+                    return yScale(0)
+                   }
+                   else{
+                    return yScale(d[1]);
+                   }
                })
                .attr("height", d => {
-                   return yScale(d[0]) - yScale(d[1]);
+                   return Math.abs(yScale(d[0]) - yScale(d[1]));
                })
-               .attr("width", xScale.bandwidth());
+               .attr("width", xScale.bandwidth())
+               .on("mouseover", mouseover)
+               .on("mousemove", mousemove)
+               .on("mouseleave", mouseleave);
 
         if(this.props.group === "city"){
             valueGroup.attr("fill", function(d, i){
@@ -210,6 +295,13 @@ export class StackedBarChart extends Component {
             .attr("dy", ".35em")
             .attr("transform", "rotate(90)")
             .style("text-anchor", "start");
+
+        xGroup.append("g")
+            .attr("class", "xaxis")
+            .append("line")
+            .attr("y1", yScale(0))
+            .attr("y2", yScale(0))
+            .attr("x2", width);
 
         if(width < 700){
             let ticks = xAxisLabels.selectAll(".tick text");
@@ -237,10 +329,14 @@ export class StackedBarChart extends Component {
             .call(d3.axisLeft(yScale).ticks(tickNum).tickFormat(billionDollarFormat))
             .call(g => g.selectAll(".domain").remove())
 
+
     }
 
     render(){        
-        return <svg width="100%" ref={this.chartRef}></svg>
+        return (
+        <div ref={this.chartDiv}>
+            <svg width="100%" ref={this.chartRef}></svg>
+        </div>)
     }
 
 }
