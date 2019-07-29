@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
 import { getValueForVariable } from "./Utils";
-import { Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { StackedBarChart } from './StackedBarChart';
+import { DataTable } from './DataTable';
 
 
 export class DefisurpPage extends Component {
 
     dataTableFields = [
-        { id: "slc.10X.L2099.C01.01", desc: "Anual Surplus/Deficit", 
+        { id: 'slc.10X.L2010.C01.01', desc: "Total Revenues", 
+            calc: (d, i, total, year) => {
+                return getValueForVariable(d, 'slc.10X.L2010.C01.01', i, total, year, this.props.selectedCities, this.props.agg)}
+        },
+        { id: 'slc.10X.L2020.C01.01', desc: "Total Expenses", 
+            calc: (d, i, total, year) => {
+                return getValueForVariable(d, 'slc.10X.L2020.C01.01', i, total, year, this.props.selectedCities, this.props.agg)}
+        },
+        { id: 'slc.10X.L2099.C01.01', desc: "Annual Surplus/Deficit", 
             calc: (d, i, total, year) => {
                 return getValueForVariable(d, 'slc.10X.L2099.C01.01', i, total, year, this.props.selectedCities, this.props.agg)}
         }
@@ -18,6 +27,7 @@ export class DefisurpPage extends Component {
     getTotal(d, year) {
         return d[year][this.totalID].amount;
     }
+
 
 
     getCityBarData() {
@@ -31,7 +41,7 @@ export class DefisurpPage extends Component {
                     year: year,
                 }
                 if (d[year] === undefined) {
-                    for(let field of this.dataTableFields){
+                    for(let field of this.dataTableFields.slice(-1)){
                         retObject[field.desc] = 0;
                     }
                     return retObject;
@@ -40,7 +50,7 @@ export class DefisurpPage extends Component {
                 let totalUp = 0;
                 let total = this.getTotal(d, year);
 
-                for(let field of this.dataTableFields){
+                for(let field of this.dataTableFields.slice(-1)){
                     retObject[field.desc] = field.calc(d, i, total, year);
                     totalUp += retObject[field.desc];
                 }
@@ -82,8 +92,8 @@ export class DefisurpPage extends Component {
 
         return (
             <Col>
-                <h6 className="text-center" >Yearly {this.props.title} - {desc}</h6>
-                <StackedBarChart group="city" keys={fieldNames} data={barData} years={years} type={this.props.agg}></StackedBarChart>
+                <h6 className="text-center" >Yearly Deficit/Surplus - {desc}</h6>
+                <StackedBarChart group="city" keys={fieldNames.slice(-1)} data={barData} years={years} type={this.props.agg}></StackedBarChart>
                 
                 <br />
                 <br />
@@ -91,6 +101,36 @@ export class DefisurpPage extends Component {
                 <br />
             </Col>
         )
+    }
+
+    renderDataTable() {
+        let year = "2017";
+
+        let dataArr = this.props.cities.map((d, i) => {
+            if (d[year] === undefined) {
+                return []
+            }
+
+            let total = this.getTotal(d, year);
+
+            return this.dataTableFields.map(field => {
+                return field.calc(d, i, total, year);
+            })
+
+        });
+
+        if(dataArr.length === 0){
+            return;
+        }
+
+        return (
+            <Col>
+                <h6 className="text-center" >{year} Revenues and Expenses</h6>
+                <DataTable agg={this.props.agg} data={dataArr} fields={this.dataTableFields} cities={this.props.cities}></DataTable>
+                <br />
+            </Col>
+        )
+
     }
 
 
@@ -102,7 +142,14 @@ export class DefisurpPage extends Component {
 
         return (
             <div>
+                <Row>
                 {this.renderStackedBarChart()}
+                </Row>
+      
+
+                <Row>
+                    {this.renderDataTable()}
+                </Row>
             </div>
         )
     }

@@ -4,6 +4,7 @@ import * as d3 from "d3";
 
 export class DataTable extends Component {
 
+
     renderTableData(){
         return this.props.fields.map( (field, fieldNum) => {
             let values = this.props.cities.map( (city, cityNum) => {
@@ -39,7 +40,7 @@ export class DataTable extends Component {
 
     render() {
         return (
-            <table className="table table-bordered table-condensed">
+            <table className="table table-bordered table-condensed table-hover">
                 <thead>
                     <tr>
                         <th>Item Name</th>

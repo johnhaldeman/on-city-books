@@ -39,8 +39,20 @@
   stroke: #000;
 }
 
+.white{
+  fill: white
+}
+
 .pointer-cursor {cursor: pointer;}
 
 .pointer-no {cursor: not-allowed;}
 
 .number-text {text-align: end;}
+
+.justify-content-md-center {
+  justify-content: center!important;
+}
+
+.width80pc{
+  width: 70%;
+}

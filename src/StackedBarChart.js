@@ -221,7 +221,7 @@ export class StackedBarChart extends Component {
             if(this.props.type === "percentage"){
                 return d3.format(".0%")(d);
             }
-            return '$' + d3.format(',')(d); 
+            return '$' + d3.format(',.0f')(d); 
         };
 
         // Three function that change the tooltip when user hover / move / leave a cell

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Badge, Button } from 'react-bootstrap';
+import { Badge, Button, Alert } from 'react-bootstrap';
 import { CitySelectionModal } from "./CitySelectionModal";
 import {Redirect} from 'react-router';
 
@@ -66,19 +66,47 @@ export class CityPills extends Component {
         }
         return retStr;
     }
+
+    getMessage(){
+        if(this.props.type !== "rankings" && (this.props.cities === undefined || this.props.cities.length === 0)){
+            return (
+                <Alert variant="primary">
+                    Select a city using the "Add New City" button above to get started
+                </Alert>
+            )
+        }
+    }
   
 
     render() {
         if (this.state.citySelected !== undefined && !this.redirected) {
             this.redirected = true;
-            return <Redirect to={"/" + this.props.type + "/" + this.props.agg + this.getCityNamesSlashDelimited(this.props.cities) + "/" + this.state.citySelected }  />;
+
+            if(this.props.type === "rankings"){
+                return <Redirect to={"/" + this.props.type + "/" + this.props.agg +  "/rankitem-" + this.props.rankitem + "/year-" + this.props.year + "/tier-"  + this.props.tier + this.getCityNamesSlashDelimited(this.props.cities) + "/" + this.state.citySelected }  />;
+            }
+            else if(this.props.type === "alldata"){
+                return <Redirect to={"/" + this.props.type + "/" + this.props.agg +  "/schedule-" + this.props.schedule + "/selected-" + this.state.citySelected + "/year-"  + this.props.year + this.getCityNamesSlashDelimited(this.props.cities) + "/" + this.state.citySelected }  />;
+            }
+            else{
+                return <Redirect to={"/" + this.props.type + "/" + this.props.agg + this.getCityNamesSlashDelimited(this.props.cities) + "/" + this.state.citySelected }  />;
+            }
         }
 
         if (this.state.cityRemoved !== undefined && !this.redirected) {
             this.redirected = true;
             let newCityList = this.props.cities.slice(0);
             newCityList.splice(this.state.cityRemoved, 1);
-            return <Redirect to={"/" + this.props.type + "/" + this.props.agg + this.getCityNamesSlashDelimited(newCityList)}  />;
+
+            if(this.props.type === "rankings"){
+                return <Redirect to={"/" + this.props.type + "/" + this.props.agg +  "/rankitem-" + this.props.rankitem + "/year-" + this.props.year + "/tier-"  + this.props.tier + this.getCityNamesSlashDelimited(newCityList)}  />;
+            }
+            else if(this.props.type === "alldata"){
+                return <Redirect to={"/" + this.props.type + "/" + this.props.agg +  "/schedule-" + this.props.schedule + "/selected-" + this.props.cities[0].id + "/year-"  + this.props.year + this.getCityNamesSlashDelimited(newCityList)}  />;
+            }
+            else{
+                return <Redirect to={"/" + this.props.type + "/" + this.props.agg + this.getCityNamesSlashDelimited(newCityList)}  />;
+            }
         }
 
         return(
@@ -90,6 +118,8 @@ export class CityPills extends Component {
                 <br/><br/>
 
                 <CitySelectionModal citySelected={this.citySelected} currentURL={this.props.currentURL} muniData={this.props.muniData} show={this.state.show} onHide={this.handleHide}></CitySelectionModal>
+
+                {this.getMessage()}
             </div>
         );
     }

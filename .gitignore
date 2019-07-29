@@ -24,3 +24,5 @@ data/*.zip
 data/*.csv
 data/out/*.json
 public/munis/*/*.json
+data/out/rankings/*/*.json
+public/munis/v1/rankings/*/*.json

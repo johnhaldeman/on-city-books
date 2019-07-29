@@ -22,3 +22,41 @@ export function getValueForVariable(d, id, i, total, year, selectedCities, agg) 
     }
 }
 
+let keyedMuniData = undefined;
+
+export function getAggregateValue(muniData, muni_id, value, agg){
+    if(muniData === undefined){
+        return value;
+    }
+    if(keyedMuniData === undefined){
+        keyedMuniData = {};
+        for(let muni of muniData){
+            keyedMuniData[muni.id] = muni;
+        }
+    }
+
+    if(agg === "capita"){
+        return value / keyedMuniData[muni_id].population;
+    }
+    else if(agg === "household"){
+        return value / keyedMuniData[muni_id].households;
+    }
+    else{
+        return value;
+    }
+    
+
+
+}
+
+
+export function getCityNamesSlashDelimited(cityList){
+    if(cityList === undefined){
+        return "";
+    }
+    let retStr = "";
+    for(let city of cityList){
+        retStr += "/" + city.id;
+    }
+    return retStr;
+}
