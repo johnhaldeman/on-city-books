@@ -21,6 +21,10 @@
   overflow:auto;
 }
 
+.table-purple {
+  background-color: #efe1ff;
+}
+
 
 .modal-50w {
   width: 75% !important;
@@ -55,4 +59,8 @@
 
 .width80pc{
   width: 70%;
+}
+
+.modal-content {
+  overflow: auto;
 }

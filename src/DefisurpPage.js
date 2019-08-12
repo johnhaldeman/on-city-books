@@ -32,7 +32,7 @@ export class DefisurpPage extends Component {
 
     getCityBarData() {
 
-        const years = ["2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017"];
+        const years = ["2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"];
         let cityBarData = this.props.cities.map((d, i) => {
             let cityObject = { city: d.desc };
             cityObject.year_data = years.map((year) => {
@@ -67,7 +67,7 @@ export class DefisurpPage extends Component {
 
 
     renderStackedBarChart() {
-        const years = ["2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017"];
+        const years = ["2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"];
 
 
         let desc = "Totals";

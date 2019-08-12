@@ -4,6 +4,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { StatePage } from './StatPage.js';
 import { XHRClient } from './XHRClient';
+import { About } from "./About"
 
 class App extends Component {
 
@@ -103,18 +104,25 @@ class App extends Component {
       <div>
         <Router>
           <Switch>
-            <Route path="/:page(revenue|expense|defisurp|rankings|alldata)/:aggregate(total|capita|household|percentage)/rankitem-:rankitem/year-:year/tier-:tier/:city1/:city2/:city3" exact component={this.getStatePage()} />
-            <Route path="/:page(revenue|expense|defisurp|rankings|alldata)/:aggregate(total|capita|household|percentage)/rankitem-:rankitem/year-:year/tier-:tier/:city1/:city2" exact component={this.getStatePage()}/>
-            <Route path="/:page(revenue|expense|defisurp|rankings|alldata)/:aggregate(total|capita|household|percentage)/rankitem-:rankitem/year-:year/tier-:tier/:city1" exact component={this.getStatePage()} />
-            <Route path="/:page(revenue|expense|defisurp|rankings|alldata)/:aggregate(total|capita|household|percentage)/rankitem-:rankitem/year-:year/tier-:tier/" exact component={this.getStatePage()} />
-            <Route path="/:page(revenue|expense|defisurp|rankings|alldata)/:aggregate(total|capita|household|percentage)/schedule-:schedule/selected-:selectedCity/year-:year/:city1/:city2/:city3" exact component={this.getStatePage()} />
-            <Route path="/:page(revenue|expense|defisurp|rankings|alldata)/:aggregate(total|capita|household|percentage)/schedule-:schedule/selected-:selectedCity/year-:year/:city1/:city2" exact component={this.getStatePage()} />
-            <Route path="/:page(revenue|expense|defisurp|rankings|alldata)/:aggregate(total|capita|household|percentage)/schedule-:schedule/selected-:selectedCity/year-:year/:city1" exact component={this.getStatePage()} />
-            <Route path="/:page(revenue|expense|defisurp|rankings|alldata)/:aggregate(total|capita|household|percentage)/schedule-:schedule/selected-:selectedCity/year-:year" exact component={this.getStatePage()} />
-            <Route path="/:page(revenue|expense|defisurp|rankings|alldata)/:aggregate(total|capita|household|percentage)/:city1/:city2/:city3" exact component={this.getStatePage()} />
-            <Route path="/:page(revenue|expense|defisurp|rankings|alldata)/:aggregate(total|capita|household|percentage)/:city1/:city2" exact component={this.getStatePage()}/>
-            <Route path="/:page(revenue|expense|defisurp|rankings|alldata)/:aggregate(total|capita|household|percentage)/:city1" exact component={this.getStatePage()} />
-            <Route path="/:page(revenue|expense|defisurp|rankings|alldata)/:aggregate(total|capita|household|percentage)" exact component={this.getStatePage()} />
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/rankitem-:rankitem/year-:year/tier-:tier/:city1/:city2/:city3/:city4/:city5" exact component={this.getStatePage()} />
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/rankitem-:rankitem/year-:year/tier-:tier/:city1/:city2/:city3/:city4" exact component={this.getStatePage()} />
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/rankitem-:rankitem/year-:year/tier-:tier/:city1/:city2/:city3" exact component={this.getStatePage()} />
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/rankitem-:rankitem/year-:year/tier-:tier/:city1/:city2" exact component={this.getStatePage()}/>
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/rankitem-:rankitem/year-:year/tier-:tier/:city1" exact component={this.getStatePage()} />
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/rankitem-:rankitem/year-:year/tier-:tier/" exact component={this.getStatePage()} />
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/schedule-:schedule/selected-:selectedCity/year-:year/:city1/:city2/:city3/:city4/:city5" exact component={this.getStatePage()} />
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/schedule-:schedule/selected-:selectedCity/year-:year/:city1/:city2/:city3/:city4" exact component={this.getStatePage()} />
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/schedule-:schedule/selected-:selectedCity/year-:year/:city1/:city2/:city3" exact component={this.getStatePage()} />
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/schedule-:schedule/selected-:selectedCity/year-:year/:city1/:city2" exact component={this.getStatePage()} />
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/schedule-:schedule/selected-:selectedCity/year-:year/:city1" exact component={this.getStatePage()} />
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/schedule-:schedule/selected-:selectedCity/year-:year" exact component={this.getStatePage()} />
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/:city1/:city2/:city3/:city4/:city5" exact component={this.getStatePage()} />
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/:city1/:city2/:city3/:city4" exact component={this.getStatePage()} />
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/:city1/:city2/:city3" exact component={this.getStatePage()} />
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/:city1/:city2" exact component={this.getStatePage()}/>
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)/:city1" exact component={this.getStatePage()} />
+            <Route path="/:page(revenue|expense|defisurp|rankings|alldata|capitalassets)/:aggregate(total|capita|household|percentage)" exact component={this.getStatePage()} />
+            <Route path="/about" exact component={About} />
             <Route path="/" exact component={this.getStatePage()} />
           </Switch>
         </Router>

@@ -306,7 +306,7 @@ export class StackedBarChart extends Component {
         if(width < 700){
             let ticks = xAxisLabels.selectAll(".tick text");
             ticks.attr("class", function(d,i){
-                if(i % 3 !== 0) d3.select(this).remove();
+                if(i % 2 !== 0) d3.select(this).remove();
             });
         }
         

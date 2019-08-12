@@ -204,6 +204,12 @@ export class RankingPage extends Component {
         else if(this.props.cities[2] !== undefined && muni_id === this.props.cities[2].id){
             className = "table-success";
         }
+        else if(this.props.cities[3] !== undefined && muni_id === this.props.cities[3].id){
+            className = "table-danger";
+        }
+        else if(this.props.cities[4] !== undefined && muni_id === this.props.cities[4].id){
+            className = "table-purple";
+        }
         
         return className;
     }

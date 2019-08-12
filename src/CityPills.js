@@ -18,9 +18,9 @@ export class CityPills extends Component {
         "primary",
         "warning",
         "success",
-        "dark",
+        "danger",
         "info",
-        "danger"
+        "dark"
       ];
 
     getPills(){
@@ -68,13 +68,47 @@ export class CityPills extends Component {
     }
 
     getMessage(){
+        let messages = [];
         if(this.props.type !== "rankings" && (this.props.cities === undefined || this.props.cities.length === 0)){
-            return (
-                <Alert variant="primary">
-                    Select a city using the "Add New City" button above to get started
+            messages.push (
+                <Alert key="empty" variant="primary">
+                    Select a city using the "Add New City" button above to get started.
                 </Alert>
             )
         }
+        if(this.props.agg === "total" && this.props.cities.length >= 2){
+            messages.push (
+                <Alert key="totals" variant="danger">
+                    <strong>Warning: </strong>You are currently comparing municipalities but using raw totals. 
+                    Consider switching to per capita or per household measures using the green "Total Value" drop down in the toolbar above.
+                </Alert>
+            )
+        }
+
+        let tiers = {};
+        for(let city of this.props.cities){
+            tiers[city.tier] = true;
+        }
+        if(Object.keys(tiers).length > 1){
+            messages.push (
+                <Alert key="tiers" variant="danger">
+                    <strong>Warning: </strong>You are currently comparing municipalities in separate tiers. 
+                    Single, Upper, and Lower tier municipalities have different responsibilities and as such this comparison may be of limited use.
+                </Alert>
+            )
+        }
+
+        if(window.innerWidth < 700 || window.innerHeight < 700){
+            messages.push (
+                <Alert key="tiers" variant="warning">
+                    <strong>Warning: </strong>You appear to be using a device with a low screen resolution (mobile?). 
+                    While we have attempted to make the application work with these devices, because of this application's
+                    information density, it may be easier to see the data on a tablet, laptop, or desktop.
+                </Alert>
+            )
+        }
+
+        return messages;
     }
   
 
@@ -114,7 +148,7 @@ export class CityPills extends Component {
                 <br/>
                 {this.getPills()}
                 &nbsp; &nbsp;&nbsp;&nbsp;
-                <Button size="sm" disabled={this.props.cities.length >= 3} onClick={this.handleShow} className={this.props.cities.length <= 2 ? "full-size-text pointer-cursor" : "full-size-text pointer-no"} variant="dark" >+ Add New City &nbsp;</Button>
+                <Button size="sm" disabled={this.props.cities.length >= 5} onClick={this.handleShow} className={this.props.cities.length <= 2 ? "full-size-text pointer-cursor" : "full-size-text pointer-no"} variant="dark" >+ Add New City &nbsp;</Button>
                 <br/><br/>
 
                 <CitySelectionModal citySelected={this.citySelected} currentURL={this.props.currentURL} muniData={this.props.muniData} show={this.state.show} onHide={this.handleHide}></CitySelectionModal>
